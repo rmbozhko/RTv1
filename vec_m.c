@@ -22,7 +22,7 @@ int			intersect_sphere(t_ray *ray, void *obj, t_vedro *vedro, double d)
 
 	ret = 0;
 	sphere = (t_sphere *)(obj);
-	dist = vector_sub(&sphere->centre, &ray->start);
+	dist = min_matrix(&sphere->centre, &ray->start);
 	ab.x = vector_dot(&ray->dir, &dist);
 	ab.y = ab.x * ab.x - vector_dot(&dist, &dist) + sphere->radius2;
 	if (ab.y < 0.0)
@@ -49,7 +49,7 @@ int			intersect_cylinder(t_ray *ray, t_cylinder *cyl,
 	int			ret;
 
 	ret = 0;
-	dist = vector_sub(&cyl->pos, &ray->start);
+	dist = min_matrix(&cyl->pos, &ray->start);
 	cyl->rot = initialize_norm_process(&cyl->rot);
 	abc = cyl_abc(ray, cyl, &dist);
 	discr = abc.y * abc.y - 4 * abc.x * abc.z;
@@ -76,7 +76,7 @@ int			intersect_cone(t_ray *ray, t_cone *cone, t_vedro *vedro, double d)
 	int			ret;
 
 	ret = 0;
-	dist = vector_sub(&cone->pos, &ray->start);
+	dist = min_matrix(&cone->pos, &ray->start);
 	cone->rot = initialize_norm_process(&cone->rot);
 	abc = cone_abc(ray, cone, &dist);
 	discr = abc.y * abc.y - 4 * abc.x * abc.z;
@@ -105,7 +105,7 @@ int			intersect_plane(t_ray *ray, void *obj, t_vedro *vedro, double d)
 	denom = vector_dot(&plane->normal, &ray->dir);
 	if (fabs(denom) > 0.001)
 	{
-		pl = vector_sub(&plane->point, &ray->start);
+		pl = min_matrix(&plane->point, &ray->start);
 		t = vector_dot(&pl, &plane->normal) / denom;
 		if (t > 0.001 && t < vedro->t)
 		{

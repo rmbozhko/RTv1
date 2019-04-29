@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-t_vector	vector_sub(t_vector *v1, t_vector *v2)
+t_vector	min_matrix(t_vector *v1, t_vector *v2)
 {
 	t_vector res;
 

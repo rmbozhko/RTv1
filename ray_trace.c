@@ -78,7 +78,7 @@ t_ray	find_shadow_ray(t_vedro *vedro, t_ray *ray)
 
 	vedro->scaled = multiply_vector_with_skalar(&ray->dir, vedro->t);
 	vedro->new_start = vector_add(&ray->start, &vedro->scaled);
-	vedro->dist_to_light = vector_sub(&vedro->light.pos, &vedro->new_start);
+	vedro->dist_to_light = min_matrix(&vedro->light.pos, &vedro->new_start);
 	shadow_ray.start = vedro->new_start;
 	shadow_ray.dir = initialize_norm_process(&vedro->dist_to_light);
 	return (shadow_ray);
@@ -101,7 +101,7 @@ void	draw_object(t_vedro *vedro, int cur_obj, t_vector *dir)
 		color_dark.b += (255 - color_dark.b)
 			* find_cos_vectors(&norm, dir) * 15;
 	}
-	im_pp(vedro, vedro->x, vedro->y, &color_dark);
+	insert_pixel(vedro, vedro->x, vedro->y, &color_dark);
 }
 
 void	fill_screen(t_vedro *vedro, t_ray *shadow_ray,
@@ -112,6 +112,6 @@ void	fill_screen(t_vedro *vedro, t_ray *shadow_ray,
 	else
 	{
 		vedro->obj[cur_obj].color.tr = 230;
-		im_pp(vedro, vedro->x, vedro->y, &(vedro->obj[cur_obj].color));
+		insert_pixel(vedro, vedro->x, vedro->y, &(vedro->obj[cur_obj].color));
 	}
 }

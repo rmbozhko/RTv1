@@ -14,13 +14,17 @@
 # define RTV1_H
 
 # include "libft/libft.h"
-# include <stdio.h>
 # include <mlx.h>
 
 # define WIDTH 1900
 # define HEIGHT 1200
 # define BPP 32
 # define ESC 53
+
+# define SPHERE 1
+# define CYLINDER 2
+# define CONUS 3
+# define PLANE 4
 
 # define INV_WIDTH (1 / (double)WIDTH)
 # define INV_HEIGHT (1 / (double)HEIGHT)
@@ -145,7 +149,7 @@ void		instantiating_fentity(t_vedro *vedro);
 void		instantiating_sentity(t_vedro *vedro);
 void		instantiating_tentity(t_vedro *vedro);
 
-void			im_pp(t_vedro *vedro, int x, int y, t_color *color);
+void			insert_pixel(t_vedro *vedro, int x, int y, t_color *color);
 
 int				intersect_sphere(t_ray *ray, void *obj,
 						t_vedro *vedro, double d);
@@ -182,7 +186,7 @@ void			fill_screen(t_vedro *vedro, t_ray *shadow_ray,
 
 void			draw(t_vedro *vedro);
 
-t_vector			vector_sub(t_vector *v1, t_vector *v2);
+t_vector			min_matrix(t_vector *v1, t_vector *v2);
 t_vector			multiply_vector_with_skalar(t_vector *v, double scale);
 t_vector			vector_add(t_vector *v1, t_vector *v2);
 t_vector			initialize_norm_process(t_vector *vector);

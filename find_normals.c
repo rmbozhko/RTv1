@@ -18,10 +18,10 @@ t_vector	cylinder_normal(t_vector *start, t_cylinder *cyl)
 	t_vector	c;
 	double		temp;
 
-	norm = vector_sub(start, &cyl->pos);
+	norm = min_matrix(start, &cyl->pos);
 	temp = vector_dot(&norm, &cyl->rot);
 	c = multiply_vector_with_skalar(&cyl->rot, temp);
-	norm = vector_sub(&norm, &c);
+	norm = min_matrix(&norm, &c);
 	norm = initialize_norm_process(&norm);
 	return (norm);
 }
@@ -31,7 +31,7 @@ t_vector	sphere_normal(t_vector *start, t_sphere *sphere)
 	t_vector	norm;
 	double		h;
 
-	norm = vector_sub(start, &sphere->centre);
+	norm = min_matrix(start, &sphere->centre);
 	h = vector_dot(start, &sphere->centre);
 	norm = multiply_vector_with_skalar(&norm, 1 / h);
 	return (norm);
@@ -53,11 +53,11 @@ t_vector	cone_normal(t_vector *start, t_cone *cone)
 	t_vector	c;
 	double		temp;
 
-	norm = vector_sub(start, &cone->pos);
+	norm = min_matrix(start, &cone->pos);
 	temp = vector_dot(&norm, &cone->rot);
 	c = multiply_vector_with_skalar(&cone->rot, temp);
 	c = multiply_vector_with_skalar(&c, (1 + pow(tan(cone->angle), 2)));
-	norm = vector_sub(&norm, &c);
+	norm = min_matrix(&norm, &c);
 	norm = initialize_norm_process(&norm);
 	return (norm);
 }
@@ -69,13 +69,13 @@ t_vector	normal(t_obj *obj, t_vector *start, t_vector *lil)
 	norm.x = 0;
 	norm.y = 0;
 	norm.z = 0;
-	if (obj->type == 1)
+	if (obj->type == SPHERE)
 		return (sphere_normal(start, (t_sphere *)(obj->obj)));
-	else if (obj->type == 2)
+	else if (obj->type == CYLINDER)
 		return (cylinder_normal(start, (t_cylinder *)(obj->obj)));
-	else if (obj->type == 4)
-		return (plane_normal((t_plane *)(obj->obj), lil));
-	else if (obj->type == 3)
+	else if (obj->type == CONUS)
 		return (cone_normal(start, (t_cone *)(obj->obj)));
+	else if (obj->type == PLANE)
+		return (plane_normal((t_plane *)(obj->obj), lil));
 	return (norm);
 }

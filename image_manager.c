@@ -29,7 +29,7 @@ void		ft_init_env(t_vedro *vedro)
 	instantiating_fentity(vedro);
 }
 
-void	im_pp(t_vedro *vedro, int x, int y, t_color *color)
+void	insert_pixel(t_vedro *vedro, int x, int y, t_color *color)
 {
 	if ((x >= 0 && x < WIDTH) && (y >= 0 && y < HEIGHT))
 	{
