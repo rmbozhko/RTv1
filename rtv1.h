@@ -13,8 +13,11 @@
 #ifndef RTV1_H
 # define RTV1_H
 
+# include <stdlib.h>
+# include <stdio.h> 
 # include "libft/libft.h"
 # include <mlx.h>
+# include "jpeglib/jpeglib.h"
 
 # define WIDTH 1900
 # define HEIGHT 1200
@@ -179,7 +182,9 @@ int			determine_interacting(t_env *env, t_beam *ray, double light_d);
 t_beam		determine_sbeam(t_env *env, t_beam *ray);
 void		pull_beam(t_env *env);
 
-
-int			ft_make_printscreen(t_env *env);
+FILE			*ft_get_file(void);
+void			ft_init_st(struct jpeg_compress_struct *c, FILE *o);
+unsigned char	*ft_get_proper(t_env *env);
+int				ft_make_printscreen(t_env *env);
 
 #endif

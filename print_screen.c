@@ -5,7 +5,7 @@ FILE		*ft_get_file(void)
 	char		*filename;
 	FILE		*outfile;
 
-	filename = ft_strjoin("Wolf3D", ".jpg");
+	filename = ft_strjoin("RTv1", ".jpg");
 	outfile = fopen(filename, "wb");
 	ft_strdel(&filename);
 	if (!outfile)
