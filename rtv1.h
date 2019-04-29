@@ -20,6 +20,7 @@
 # define WIDTH 1900
 # define HEIGHT 1200
 # define BPP 32
+# define ESC 53
 
 # define INV_WIDTH (1 / (double)WIDTH)
 # define INV_HEIGHT (1 / (double)HEIGHT)
@@ -140,6 +141,10 @@ typedef struct	s_vedro
 
 void		ft_init_env(t_vedro *vedro);
 
+void		instantiating_fentity(t_vedro *vedro);
+void		instantiating_sentity(t_vedro *vedro);
+void		instantiating_tentity(t_vedro *vedro);
+
 void			im_pp(t_vedro *vedro, int x, int y, t_color *color);
 
 int				intersect_sphere(t_ray *ray, void *obj,
@@ -162,9 +167,9 @@ t_vector		normal(t_obj *obj, t_vector *start, t_vector *lil);
 t_vector		cone_abc(t_ray *ray, t_cone *cone, t_vector *dist);
 t_vector		cyl_abc(t_ray *ray, t_cylinder *cyl, t_vector *dist);
 
-t_vector		rotate_x(t_vector *dir, double angle);
-t_vector		rotate_y(t_vector *dir, double angle);
-t_vector		rotate_z(t_vector *dir, double angle);
+t_vector		abscissa_rotation(t_vector *dir, double angle);
+t_vector		ordinate_rotation(t_vector *dir, double angle);
+t_vector		aplikata_rotation(t_vector *dir, double angle);
 t_vector		rotate(t_vector *v, double alpha, double beta, double gamma);
 
 void			ray_trace(t_vedro *vedro);
@@ -178,9 +183,9 @@ void			fill_screen(t_vedro *vedro, t_ray *shadow_ray,
 void			draw(t_vedro *vedro);
 
 t_vector			vector_sub(t_vector *v1, t_vector *v2);
-t_vector			vector_scale(t_vector *v, double scale);
+t_vector			multiply_vector_with_skalar(t_vector *v, double scale);
 t_vector			vector_add(t_vector *v1, t_vector *v2);
-t_vector			normalize(t_vector *vector);
+t_vector			initialize_norm_process(t_vector *vector);
 double				vector_dot(t_vector *v1, t_vector *v2);
 double				find_cos_vectors(t_vector *v1, t_vector *v2);
 

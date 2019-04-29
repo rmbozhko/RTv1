@@ -12,6 +12,20 @@
 
 #include "rtv1.h"
 
+t_vector	rotate_init_ray(t_vector *v, t_vedro *vedro)
+{
+	t_vector v1;
+
+	v->x = (2 * ((vedro->x + 0.5) * INV_WIDTH) - 1) * ANGLE * ASP_RATIO;
+	v->y = (1 - 2 * ((vedro->y + 0.5) * INV_HEIGHT)) * ANGLE;
+	v->z = 1;
+	v1 = abscissa_rotation(v, vedro->alpha);
+	v1 = ordinate_rotation(&v1, vedro->beta);
+	v1 = aplikata_rotation(&v1, vedro->gamma);
+	v1 = initialize_norm_process(&v1);
+	return (v1);
+}
+
 void	ray_trace(t_vedro *vedro)
 {
 	t_ray		ray;
@@ -62,11 +76,11 @@ t_ray	find_shadow_ray(t_vedro *vedro, t_ray *ray)
 {
 	t_ray	shadow_ray;
 
-	vedro->scaled = vector_scale(&ray->dir, vedro->t);
+	vedro->scaled = multiply_vector_with_skalar(&ray->dir, vedro->t);
 	vedro->new_start = vector_add(&ray->start, &vedro->scaled);
 	vedro->dist_to_light = vector_sub(&vedro->light.pos, &vedro->new_start);
 	shadow_ray.start = vedro->new_start;
-	shadow_ray.dir = normalize(&vedro->dist_to_light);
+	shadow_ray.dir = initialize_norm_process(&vedro->dist_to_light);
 	return (shadow_ray);
 }
 

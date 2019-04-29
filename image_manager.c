@@ -26,6 +26,7 @@ void		ft_init_env(t_vedro *vedro)
 	vedro->e = 0;
 	vedro->data = mlx_get_data_addr(vedro->img, &vedro->bpp,
 		&vedro->sline, &vedro->e);
+	instantiating_fentity(vedro);
 }
 
 void	im_pp(t_vedro *vedro, int x, int y, t_color *color)

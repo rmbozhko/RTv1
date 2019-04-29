@@ -50,7 +50,7 @@ int			intersect_cylinder(t_ray *ray, t_cylinder *cyl,
 
 	ret = 0;
 	dist = vector_sub(&cyl->pos, &ray->start);
-	cyl->rot = normalize(&cyl->rot);
+	cyl->rot = initialize_norm_process(&cyl->rot);
 	abc = cyl_abc(ray, cyl, &dist);
 	discr = abc.y * abc.y - 4 * abc.x * abc.z;
 	if (discr < 0)
@@ -77,7 +77,7 @@ int			intersect_cone(t_ray *ray, t_cone *cone, t_vedro *vedro, double d)
 
 	ret = 0;
 	dist = vector_sub(&cone->pos, &ray->start);
-	cone->rot = normalize(&cone->rot);
+	cone->rot = initialize_norm_process(&cone->rot);
 	abc = cone_abc(ray, cone, &dist);
 	discr = abc.y * abc.y - 4 * abc.x * abc.z;
 	if (discr < 0)

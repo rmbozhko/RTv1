@@ -22,7 +22,7 @@ t_vector	vector_sub(t_vector *v1, t_vector *v2)
 	return (res);
 }
 
-t_vector	vector_scale(t_vector *v, double scale)
+t_vector	multiply_vector_with_skalar(t_vector *v, double scale)
 {
 	t_vector res;
 
@@ -42,13 +42,13 @@ t_vector	vector_add(t_vector *v1, t_vector *v2)
 	return (res);
 }
 
-t_vector	normalize(t_vector *vector)
+t_vector	initialize_norm_process(t_vector *vector)
 {
 	t_vector	norm;
 	double		length;
 
 	length = sqrt(vector_dot(vector, vector));
-	norm = vector_scale(vector, 1 / length);
+	norm = multiply_vector_with_skalar(vector, 1 / length);
 	return (norm);
 }
 

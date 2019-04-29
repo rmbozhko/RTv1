@@ -20,9 +20,9 @@ t_vector	cylinder_normal(t_vector *start, t_cylinder *cyl)
 
 	norm = vector_sub(start, &cyl->pos);
 	temp = vector_dot(&norm, &cyl->rot);
-	c = vector_scale(&cyl->rot, temp);
+	c = multiply_vector_with_skalar(&cyl->rot, temp);
 	norm = vector_sub(&norm, &c);
-	norm = normalize(&norm);
+	norm = initialize_norm_process(&norm);
 	return (norm);
 }
 
@@ -33,7 +33,7 @@ t_vector	sphere_normal(t_vector *start, t_sphere *sphere)
 
 	norm = vector_sub(start, &sphere->centre);
 	h = vector_dot(start, &sphere->centre);
-	norm = vector_scale(&norm, 1 / h);
+	norm = multiply_vector_with_skalar(&norm, 1 / h);
 	return (norm);
 }
 
@@ -43,7 +43,7 @@ t_vector	plane_normal(t_plane *plane, t_vector *lil)
 
 	norm = plane->normal;
 	if (find_cos_vectors(&norm, lil) < 0)
-		norm = vector_scale(&norm, -1);
+		norm = multiply_vector_with_skalar(&norm, -1);
 	return (norm);
 }
 
@@ -55,10 +55,10 @@ t_vector	cone_normal(t_vector *start, t_cone *cone)
 
 	norm = vector_sub(start, &cone->pos);
 	temp = vector_dot(&norm, &cone->rot);
-	c = vector_scale(&cone->rot, temp);
-	c = vector_scale(&c, (1 + pow(tan(cone->angle), 2)));
+	c = multiply_vector_with_skalar(&cone->rot, temp);
+	c = multiply_vector_with_skalar(&c, (1 + pow(tan(cone->angle), 2)));
 	norm = vector_sub(&norm, &c);
-	norm = normalize(&norm);
+	norm = initialize_norm_process(&norm);
 	return (norm);
 }
 

@@ -12,7 +12,7 @@
 
 NAME = RTv1
 
-SRC = main.c image_manager.c vec_m.c abc.c find_normals.c rotation.c ray_trace.c vectors.c vectors1.c
+SRC = main.c image_manager.c vec_m.c abc.c find_normals.c rotation.c ray_trace.c vectors.c vectors1.c xyz_movement.c object_initialization.c
 SRCO = $(SRC:.c=.o)
 
 LIBFT = libft/libft.a
