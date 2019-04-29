@@ -19,6 +19,7 @@
 
 # define WIDTH 1900
 # define HEIGHT 1200
+# define BPP 32
 
 # define INV_WIDTH (1 / (double)WIDTH)
 # define INV_HEIGHT (1 / (double)HEIGHT)
@@ -136,7 +137,9 @@ typedef struct	s_vedro
 	double		t;
 }				t_vedro;
 
-void			create_image(t_vedro *vedro);
+
+void		ft_init_env(t_vedro *vedro);
+
 void			im_pp(t_vedro *vedro, int x, int y, t_color *color);
 
 int				intersect_sphere(t_ray *ray, void *obj,

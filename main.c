@@ -96,15 +96,8 @@ static void	init_objs3(t_vedro *vedro)
 int			main(void)
 {
 	t_vedro	vedro;
-
-	vedro.mlx = mlx_init();
-	vedro.win = mlx_new_window(vedro.mlx, WIDTH, HEIGHT, "RTv1");
-	vedro.x = 0;
-	vedro.y = 0;
-	vedro.alpha = 0.0;
-	vedro.beta = 0.0;
-	vedro.gamma = 0.0;
-	create_image(&vedro);
+	
+	ft_init_env(&vedro);
 	init_objs1(&vedro);
 	init_objs2(&vedro);
 	init_objs3(&vedro);

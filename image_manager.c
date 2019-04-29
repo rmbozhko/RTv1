@@ -12,10 +12,17 @@
 
 #include "rtv1.h"
 
-void	create_image(t_vedro *vedro)
+void		ft_init_env(t_vedro *vedro)
 {
+	vedro->mlx = mlx_init();
+	vedro->win = mlx_new_window(vedro->mlx, WIDTH, HEIGHT, "RTv1");
+	vedro->x = 0;
+	vedro->y = 0;
+	vedro->alpha = 0.0;
+	vedro->beta = 0.0;
+	vedro->gamma = 0.0;
 	vedro->img = mlx_new_image(vedro->mlx, WIDTH, HEIGHT);
-	vedro->bpp = 32;
+	vedro->bpp = BPP;
 	vedro->e = 0;
 	vedro->data = mlx_get_data_addr(vedro->img, &vedro->bpp,
 		&vedro->sline, &vedro->e);
