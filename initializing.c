@@ -27,6 +27,7 @@ void		ft_init_env(t_vedro *vedro)
 	vedro->data = mlx_get_data_addr(vedro->img, &vedro->bpp,
 		&vedro->sline, &vedro->e);
 	instantiating_fentity(vedro);
+	pull_beam(vedro);
 }
 
 void	insert_pixel(t_vedro *vedro, int x, int y, t_color *color)

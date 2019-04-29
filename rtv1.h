@@ -165,20 +165,18 @@ double		mult_matrix(t_vector *v1, t_vector *v2);
 
 t_vector	optimization(t_obj *obj, t_vector *start, t_vector *lil);
 
-t_vector		trg_math(t_ray *ray, t_cone *cone, t_vector *dist);
-t_vector		tdrect_math(t_ray *ray, t_cylinder *cyl, t_vector *dist);
-t_vector		xyz_rotation(t_vector *v, t_vedro *vedro);
-
-
-void			ray_trace(t_vedro *vedro);
-int				find_intersection(t_vedro *vedro, t_ray *ray, double light_d);
-t_ray			find_shadow_ray(t_vedro *vedro, t_ray *ray);
-void			draw_object(t_vedro *vedro, int cur_obj, t_vector *dir);
-void			fill_screen(t_vedro *vedro, t_ray *shadow_ray,
+void		window_setting(t_vedro *vedro, t_ray *shadow_ray,
 						double light_d, int cur_obj);
+double		calc_angle_matrix(t_vector *v1, t_vector *v2);
 
-void			draw(t_vedro *vedro);
+t_vector	trg_math(t_ray *ray, t_cone *cone, t_vector *dist);
+t_vector	tdrect_math(t_ray *ray, t_cylinder *cyl, t_vector *dist);
+t_vector	xyz_rotation(t_vector *v, t_vedro *vedro);
+void		depict_entity(t_vedro *vedro, int cur_obj, t_vector *dir);
 
-double			calc_angle_matrix(t_vector *v1, t_vector *v2);
+int			determine_interacting(t_vedro *vedro, t_ray *ray, double light_d);
+t_ray		determine_sbeam(t_vedro *vedro, t_ray *ray);
+void		pull_beam(t_vedro *vedro);
+
 
 #endif

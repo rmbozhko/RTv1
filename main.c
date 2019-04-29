@@ -24,7 +24,6 @@ int			main(void)
 	t_vedro	vedro;
 	
 	ft_init_env(&vedro);
-	ray_trace(&vedro);
 	mlx_put_image_to_window(vedro.mlx, vedro.win, vedro.img, 0, 0);
 	mlx_hook(vedro.win, 2, 5, key_control, &vedro);
 	mlx_loop(vedro.mlx);

@@ -26,7 +26,7 @@ t_vector	xyz_rotation(t_vector *v, t_vedro *vedro)
 	return (v1);
 }
 
-void	ray_trace(t_vedro *vedro)
+void	pull_beam(t_vedro *vedro)
 {
 	t_ray		ray;
 	t_ray		shadow_ray;
@@ -41,12 +41,12 @@ void	ray_trace(t_vedro *vedro)
 		while (vedro->x < WIDTH)
 		{
 			ray.dir = xyz_rotation(&ray.dir, vedro);
-			if ((cur_obj = find_intersection(vedro, &ray, 800000)) != -1)
+			if ((cur_obj = determine_interacting(vedro, &ray, 800000)) != -1)
 			{
-				shadow_ray = find_shadow_ray(vedro, &ray);
+				shadow_ray = determine_sbeam(vedro, &ray);
 				light_d = sqrt(mult_matrix(&vedro->dist_to_light,
 					&vedro->dist_to_light));
-				fill_screen(vedro, &shadow_ray, light_d, cur_obj);
+				window_setting(vedro, &shadow_ray, light_d, cur_obj);
 			}
 			vedro->x++;
 		}
@@ -55,7 +55,7 @@ void	ray_trace(t_vedro *vedro)
 	}
 }
 
-int		find_intersection(t_vedro *vedro, t_ray *ray, double light_d)
+int		determine_interacting(t_vedro *vedro, t_ray *ray, double light_d)
 {
 	int		cur_obj;
 	int		i;
@@ -72,7 +72,7 @@ int		find_intersection(t_vedro *vedro, t_ray *ray, double light_d)
 	return (cur_obj);
 }
 
-t_ray	find_shadow_ray(t_vedro *vedro, t_ray *ray)
+t_ray	determine_sbeam(t_vedro *vedro, t_ray *ray)
 {
 	t_ray	shadow_ray;
 
@@ -84,7 +84,7 @@ t_ray	find_shadow_ray(t_vedro *vedro, t_ray *ray)
 	return (shadow_ray);
 }
 
-void	draw_object(t_vedro *vedro, int cur_obj, t_vector *dir)
+void	depict_entity(t_vedro *vedro, int cur_obj, t_vector *dir)
 {
 	t_vector	norm;
 	t_color		color_dark;
@@ -104,11 +104,11 @@ void	draw_object(t_vedro *vedro, int cur_obj, t_vector *dir)
 	insert_pixel(vedro, vedro->x, vedro->y, &color_dark);
 }
 
-void	fill_screen(t_vedro *vedro, t_ray *shadow_ray,
+void	window_setting(t_vedro *vedro, t_ray *shadow_ray,
 			double light_d, int cur_obj)
 {
-	if (find_intersection(vedro, shadow_ray, light_d) == -1)
-		draw_object(vedro, cur_obj, &shadow_ray->dir);
+	if (determine_interacting(vedro, shadow_ray, light_d) == -1)
+		depict_entity(vedro, cur_obj, &shadow_ray->dir);
 	else
 	{
 		vedro->obj[cur_obj].color.tr = 230;
