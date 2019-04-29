@@ -12,16 +12,16 @@
 
 #include "rtv1.h"
 
-int			tdcircle_interacting(t_ray *ray, void *obj, t_vedro *vedro, double d)
+int			tdcircle_interacting(t_beam *ray, void *obj, t_env *env, double d)
 {
-	t_vector	dist;
-	t_vector	ab;
-	t_vector	tt;
-	t_sphere	*sphere;
+	t_matrix	dist;
+	t_matrix	ab;
+	t_matrix	tt;
+	t_tdcircle	*sphere;
 	int			ret;
 
 	ret = 0;
-	sphere = (t_sphere *)(obj);
+	sphere = (t_tdcircle *)(obj);
 	dist = min_matrix(&sphere->centre, &ray->start);
 	ab.x = mult_matrix(&ray->dir, &dist);
 	ab.y = ab.x * ab.x - mult_matrix(&dist, &dist) + sphere->radius2;
@@ -29,22 +29,22 @@ int			tdcircle_interacting(t_ray *ray, void *obj, t_vedro *vedro, double d)
 		return (0);
 	tt.x = ab.x - sqrt(ab.y);
 	tt.y = ab.x + sqrt(ab.y);
-	(tt.x > 0.001) && (tt.x < vedro->t) ? ret = 1 : 0;
-	(tt.x > 0.001) && (tt.x < vedro->t) ? vedro->t = tt.x : 0;
-	(tt.y > 0.001) && (tt.y < vedro->t) ? ret = 1 : 0;
-	(tt.y > 0.001) && (tt.y < vedro->t) ? vedro->t = tt.y : 0;
-	vedro->t -= 0.01;
-	if (vedro->t > d)
+	(tt.x > 0.001) && (tt.x < env->t) ? ret = 1 : 0;
+	(tt.x > 0.001) && (tt.x < env->t) ? env->t = tt.x : 0;
+	(tt.y > 0.001) && (tt.y < env->t) ? ret = 1 : 0;
+	(tt.y > 0.001) && (tt.y < env->t) ? env->t = tt.y : 0;
+	env->t -= 0.01;
+	if (env->t > d)
 		return (0);
 	return (ret);
 }
 
-int			tdparaleg_interacting(t_ray *ray, t_cylinder *cyl,
-				t_vedro *vedro, double d)
+int			tdparaleg_interacting(t_beam *ray, t_tdparaleg *cyl,
+				t_env *env, double d)
 {
-	t_vector	dist;
-	t_vector	abc;
-	t_vector	t;
+	t_matrix	dist;
+	t_matrix	abc;
+	t_matrix	t;
 	double		discr;
 	int			ret;
 
@@ -57,21 +57,21 @@ int			tdparaleg_interacting(t_ray *ray, t_cylinder *cyl,
 		return (ret);
 	t.x = (abc.y - sqrt(discr)) / (2 * abc.x);
 	t.y = (abc.y + sqrt(discr)) / (2 * abc.x);
-	(t.x > 0.001) && (t.x < vedro->t) ? ret = 1 : 0;
-	(t.x > 0.001) && (t.x < vedro->t) ? vedro->t = t.x : 0;
-	(t.y > 0.001) && (t.y < vedro->t) ? ret = 1 : 0;
-	(t.y > 0.001) && (t.y < vedro->t) ? vedro->t = t.y : 0;
-	vedro->t -= 0.01;
-	if (vedro->t > d)
+	(t.x > 0.001) && (t.x < env->t) ? ret = 1 : 0;
+	(t.x > 0.001) && (t.x < env->t) ? env->t = t.x : 0;
+	(t.y > 0.001) && (t.y < env->t) ? ret = 1 : 0;
+	(t.y > 0.001) && (t.y < env->t) ? env->t = t.y : 0;
+	env->t -= 0.01;
+	if (env->t > d)
 		return (0);
 	return (ret);
 }
 
-int			trg_interacting(t_ray *ray, t_cone *cone, t_vedro *vedro, double d)
+int			trg_interacting(t_beam *ray, t_trg *cone, t_env *env, double d)
 {
-	t_vector	dist;
-	t_vector	abc;
-	t_vector	t;
+	t_matrix	dist;
+	t_matrix	abc;
+	t_matrix	t;
 	double		discr;
 	int			ret;
 
@@ -84,33 +84,33 @@ int			trg_interacting(t_ray *ray, t_cone *cone, t_vedro *vedro, double d)
 		return (ret);
 	t.x = (abc.y - sqrt(discr)) / (2 * abc.x);
 	t.y = (abc.y + sqrt(discr)) / (2 * abc.x);
-	(t.x > 0.001) && (t.x < vedro->t) ? ret = 1 : 0;
-	(t.x > 0.001) && (t.x < vedro->t) ? vedro->t = t.x : 0;
-	(t.y > 0.001) && (t.y < vedro->t) ? ret = 1 : 0;
-	(t.y > 0.001) && (t.y < vedro->t) ? vedro->t = t.y : 0;
-	vedro->t -= 0.01;
-	if (vedro->t > d)
+	(t.x > 0.001) && (t.x < env->t) ? ret = 1 : 0;
+	(t.x > 0.001) && (t.x < env->t) ? env->t = t.x : 0;
+	(t.y > 0.001) && (t.y < env->t) ? ret = 1 : 0;
+	(t.y > 0.001) && (t.y < env->t) ? env->t = t.y : 0;
+	env->t -= 0.01;
+	if (env->t > d)
 		return (0);
 	return (ret);
 }
 
-int			surface_interacting(t_ray *ray, void *obj, t_vedro *vedro, double d)
+int			surface_interacting(t_beam *ray, void *obj, t_env *env, double d)
 {
 	double		denom;
-	t_vector	pl;
-	t_plane		*plane;
+	t_matrix	pl;
+	t_surface	*plane;
 	double		t;
 
-	plane = (t_plane *)(obj);
+	plane = (t_surface *)(obj);
 	denom = mult_matrix(&plane->normal, &ray->dir);
 	if (fabs(denom) > 0.001)
 	{
 		pl = min_matrix(&plane->point, &ray->start);
 		t = mult_matrix(&pl, &plane->normal) / denom;
-		if (t > 0.001 && t < vedro->t)
+		if (t > 0.001 && t < env->t)
 		{
-			vedro->t = t - 0.1;
-			return (vedro->t > d) ? 0 : 1;
+			env->t = t - 0.1;
+			return (env->t > d) ? 0 : 1;
 		}
 		else
 			return (0);
@@ -118,18 +118,18 @@ int			surface_interacting(t_ray *ray, void *obj, t_vedro *vedro, double d)
 	return (0);
 }
 
-int			objects_hinteracting(t_obj *obj, t_ray *ray, t_vedro *vedro, double d)
+int			objects_hinteracting(t_entity *obj, t_beam *ray, t_env *env, double d)
 {
 	int		res_code;
 
 	res_code = 0;
 	if (obj->type == SPHERE)
-		res_code = tdcircle_interacting(ray, obj->obj, vedro, d);
+		res_code = tdcircle_interacting(ray, obj->obj, env, d);
 	else if (obj->type == CYLINDER)
-		res_code = tdparaleg_interacting(ray, obj->obj, vedro, d);
+		res_code = tdparaleg_interacting(ray, obj->obj, env, d);
 	else if (obj->type == CONUS)
-		res_code = trg_interacting(ray, obj->obj, vedro, d);
+		res_code = trg_interacting(ray, obj->obj, env, d);
 	else if (obj->type == PLANE)
-		res_code = surface_interacting(ray, obj->obj, vedro, d);
+		res_code = surface_interacting(ray, obj->obj, env, d);
 	return (res_code);
 }

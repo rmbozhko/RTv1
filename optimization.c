@@ -12,10 +12,10 @@
 
 #include "rtv1.h"
 
-t_vector	optimization_for_tdparaleg(t_vector *start, t_cylinder *cyl)
+t_matrix	optimization_for_tdparaleg(t_matrix *start, t_tdparaleg *cyl)
 {
-	t_vector	norm;
-	t_vector	c;
+	t_matrix	norm;
+	t_matrix	c;
 	double		temp;
 
 	norm = min_matrix(start, &cyl->pos);
@@ -26,9 +26,9 @@ t_vector	optimization_for_tdparaleg(t_vector *start, t_cylinder *cyl)
 	return (norm);
 }
 
-t_vector	optimization_for_tdcircle(t_vector *start, t_sphere *sphere)
+t_matrix	optimization_for_tdcircle(t_matrix *start, t_tdcircle *sphere)
 {
-	t_vector	norm;
+	t_matrix	norm;
 	double		h;
 
 	norm = min_matrix(start, &sphere->centre);
@@ -37,9 +37,9 @@ t_vector	optimization_for_tdcircle(t_vector *start, t_sphere *sphere)
 	return (norm);
 }
 
-t_vector	optimization_for_surface(t_plane *plane, t_vector *lil)
+t_matrix	optimization_for_surface(t_surface *plane, t_matrix *lil)
 {
-	t_vector norm;
+	t_matrix norm;
 
 	norm = plane->normal;
 	if (calc_angle_matrix(&norm, lil) < 0)
@@ -47,10 +47,10 @@ t_vector	optimization_for_surface(t_plane *plane, t_vector *lil)
 	return (norm);
 }
 
-t_vector	optimization_for_trg(t_vector *start, t_cone *cone)
+t_matrix	optimization_for_trg(t_matrix *start, t_trg *cone)
 {
-	t_vector	norm;
-	t_vector	c;
+	t_matrix	norm;
+	t_matrix	c;
 	double		temp;
 
 	norm = min_matrix(start, &cone->pos);
@@ -62,20 +62,20 @@ t_vector	optimization_for_trg(t_vector *start, t_cone *cone)
 	return (norm);
 }
 
-t_vector	optimization(t_obj *obj, t_vector *start, t_vector *lil)
+t_matrix	optimization(t_entity *obj, t_matrix *start, t_matrix *lil)
 {
-	t_vector norm;
+	t_matrix norm;
 
 	norm.x = 0;
 	norm.y = 0;
 	norm.z = 0;
 	if (obj->type == SPHERE)
-		return (optimization_for_tdcircle(start, (t_sphere *)(obj->obj)));
+		return (optimization_for_tdcircle(start, (t_tdcircle *)(obj->obj)));
 	else if (obj->type == CYLINDER)
-		return (optimization_for_tdparaleg(start, (t_cylinder *)(obj->obj)));
+		return (optimization_for_tdparaleg(start, (t_tdparaleg *)(obj->obj)));
 	else if (obj->type == CONUS)
-		return (optimization_for_trg(start, (t_cone *)(obj->obj)));
+		return (optimization_for_trg(start, (t_trg *)(obj->obj)));
 	else if (obj->type == PLANE)
-		return (optimization_for_surface((t_plane *)(obj->obj), lil));
+		return (optimization_for_surface((t_surface *)(obj->obj), lil));
 	return (norm);
 }

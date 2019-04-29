@@ -1,8 +1,8 @@
 #include "rtv1.h"
 
-t_vector	abscissa_rotation(t_vector *dir, double angle)
+t_matrix	abscissa_rotation(t_matrix *dir, double angle)
 {
-	t_vector new_dir;
+	t_matrix new_dir;
 
 	new_dir.x = dir->x;
 	new_dir.y = dir->y * cos(angle * M_PI / 180.0)
@@ -12,9 +12,9 @@ t_vector	abscissa_rotation(t_vector *dir, double angle)
 	return (new_dir);
 }
 
-t_vector	ordinate_rotation(t_vector *dir, double angle)
+t_matrix	ordinate_rotation(t_matrix *dir, double angle)
 {
-	t_vector new_dir;
+	t_matrix new_dir;
 
 	new_dir.x = dir->x * cos(angle * M_PI / 180.0)
 		- dir->z * sin(angle * M_PI / 180.0);
@@ -24,9 +24,9 @@ t_vector	ordinate_rotation(t_vector *dir, double angle)
 	return (new_dir);
 }
 
-t_vector	aplikata_rotation(t_vector *dir, double angle)
+t_matrix	aplikata_rotation(t_matrix *dir, double angle)
 {
-	t_vector new_dir;
+	t_matrix new_dir;
 
 	new_dir.x = dir->x * cos(angle * M_PI / 180.0)
 		+ dir->y * sin(angle * M_PI / 180.0);

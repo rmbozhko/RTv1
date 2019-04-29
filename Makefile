@@ -12,7 +12,7 @@
 
 NAME = RTv1
 
-SRC = main.c initializing.c interacting_handlers.c entities_math.c optimization.c send_beams.c matrix_operations.c xyz_movement.c object_initialization.c
+SRC = main.c initializing.c interacting_handlers.c entities_math.c optimization.c send_beams.c matrix_operations.c xyz_movement.c object_initialization.c print_screen.c
 SRCO = $(SRC:.c=.o)
 
 LIBFT = libft/libft.a

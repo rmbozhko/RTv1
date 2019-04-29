@@ -12,9 +12,9 @@
 
 #include "rtv1.h"
 
-t_vector	trg_math(t_ray *ray, t_cone *cone, t_vector *dist)
+t_matrix	trg_math(t_beam *ray, t_trg *cone, t_matrix *dist)
 {
-	t_vector abc;
+	t_matrix abc;
 
 	abc.x = mult_matrix(&ray->dir, &ray->dir)
 	- (1 + pow(tan(cone->angle), 2))
@@ -27,9 +27,9 @@ t_vector	trg_math(t_ray *ray, t_cone *cone, t_vector *dist)
 	return (abc);
 }
 
-t_vector	tdrect_math(t_ray *ray, t_cylinder *cyl, t_vector *dist)
+t_matrix	tdrect_math(t_beam *ray, t_tdparaleg *cyl, t_matrix *dist)
 {
-	t_vector abc;
+	t_matrix abc;
 
 	abc.x = mult_matrix(&ray->dir, &ray->dir)
 		- pow(mult_matrix(&ray->dir, &cyl->rot), 2);
@@ -40,7 +40,7 @@ t_vector	tdrect_math(t_ray *ray, t_cylinder *cyl, t_vector *dist)
 	return (abc);
 }
 
-double		calc_angle_matrix(t_vector *v1, t_vector *v2)
+double		calc_angle_matrix(t_matrix *v1, t_matrix *v2)
 {
 	double cos;
 

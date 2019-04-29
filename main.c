@@ -12,20 +12,22 @@
 
 #include "rtv1.h"
 
-static int	key_control(int keycode)
+static int	key_binds(int keycode, t_env* env)
 {
 	if (keycode == ESC)
 		exit(0);
+	else if (keycode == P_LTTR)
+		ft_make_printscreen(env);
 	return (0);
 }
 
 int			main(void)
 {
-	t_vedro	vedro;
+	t_env	env;
 	
-	ft_init_env(&vedro);
-	mlx_put_image_to_window(vedro.mlx, vedro.win, vedro.img, 0, 0);
-	mlx_hook(vedro.win, 2, 5, key_control, &vedro);
-	mlx_loop(vedro.mlx);
+	ft_init_env(&env);
+	mlx_put_image_to_window(env.mlx, env.win, env.img, 0, 0);
+	mlx_hook(env.win, 2, 5, key_binds, &env);
+	mlx_loop(env.mlx);
 	return (0);
 }

@@ -12,9 +12,9 @@
 
 #include "rtv1.h"
 
-t_vector	min_matrix(t_vector *v1, t_vector *v2)
+t_matrix	min_matrix(t_matrix *v1, t_matrix *v2)
 {
-	t_vector res;
+	t_matrix res;
 
 	res.x = v1->x - v2->x;
 	res.y = v1->y - v2->y;
@@ -22,9 +22,9 @@ t_vector	min_matrix(t_vector *v1, t_vector *v2)
 	return (res);
 }
 
-t_vector	mult_matx_skl(t_vector *v, double scale)
+t_matrix	mult_matx_skl(t_matrix *v, double scale)
 {
-	t_vector res;
+	t_matrix res;
 
 	res.x = v->x * scale;
 	res.y = v->y * scale;
@@ -32,9 +32,9 @@ t_vector	mult_matx_skl(t_vector *v, double scale)
 	return (res);
 }
 
-t_vector	summ_matrix(t_vector *v1, t_vector *v2)
+t_matrix	summ_matrix(t_matrix *v1, t_matrix *v2)
 {
-	t_vector res;
+	t_matrix res;
 
 	res.x = v1->x + v2->x;
 	res.y = v1->y + v2->y;
@@ -42,9 +42,9 @@ t_vector	summ_matrix(t_vector *v1, t_vector *v2)
 	return (res);
 }
 
-t_vector	optim_settup(t_vector *vector)
+t_matrix	optim_settup(t_matrix *vector)
 {
-	t_vector	norm;
+	t_matrix	norm;
 	double		length;
 
 	length = sqrt(mult_matrix(vector, vector));
@@ -52,7 +52,7 @@ t_vector	optim_settup(t_vector *vector)
 	return (norm);
 }
 
-double		mult_matrix(t_vector *v1, t_vector *v2)
+double		mult_matrix(t_matrix *v1, t_matrix *v2)
 {
 	double res;
 

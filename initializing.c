@@ -12,31 +12,31 @@
 
 #include "rtv1.h"
 
-void		ft_init_env(t_vedro *vedro)
+void		ft_init_env(t_env *env)
 {
-	vedro->mlx = mlx_init();
-	vedro->win = mlx_new_window(vedro->mlx, WIDTH, HEIGHT, "RTv1");
-	vedro->x = 0;
-	vedro->y = 0;
-	vedro->alpha = 0.0;
-	vedro->beta = 0.0;
-	vedro->gamma = 0.0;
-	vedro->img = mlx_new_image(vedro->mlx, WIDTH, HEIGHT);
-	vedro->bpp = BPP;
-	vedro->e = 0;
-	vedro->data = mlx_get_data_addr(vedro->img, &vedro->bpp,
-		&vedro->sline, &vedro->e);
-	instantiating_fentity(vedro);
-	pull_beam(vedro);
+	env->mlx = mlx_init();
+	env->win = mlx_new_window(env->mlx, WIDTH, HEIGHT, "RTv1");
+	env->x = 0;
+	env->y = 0;
+	env->alpha = 0.0;
+	env->beta = 0.0;
+	env->gamma = 0.0;
+	env->img = mlx_new_image(env->mlx, WIDTH, HEIGHT);
+	env->bpp = BPP;
+	env->e = 0;
+	env->data = mlx_get_data_addr(env->img, &env->bpp,
+		&env->sline, &env->e);
+	instantiating_fentity(env);
+	pull_beam(env);
 }
 
-void	insert_pixel(t_vedro *vedro, int x, int y, t_color *color)
+void	insert_pixel(t_env *env, int x, int y, t_paint *color)
 {
 	if ((x >= 0 && x < WIDTH) && (y >= 0 && y < HEIGHT))
 	{
-		vedro->data[((y * vedro->sline) + (x * 4))] = color->r;
-		vedro->data[((y * vedro->sline) + (x * 4)) + 1] = color->g;
-		vedro->data[((y * vedro->sline) + (x * 4)) + 2] = color->b;
-		vedro->data[((y * vedro->sline) + (x * 4)) + 3] = color->tr;
+		env->data[((y * env->sline) + (x * 4))] = color->r;
+		env->data[((y * env->sline) + (x * 4)) + 1] = color->g;
+		env->data[((y * env->sline) + (x * 4)) + 2] = color->b;
+		env->data[((y * env->sline) + (x * 4)) + 3] = color->tr;
 	}
 }
