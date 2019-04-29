@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-t_vector	rotate_init_ray(t_vector *v, t_vedro *vedro)
+t_vector	xyz_rotation(t_vector *v, t_vedro *vedro)
 {
 	t_vector v1;
 
@@ -22,7 +22,7 @@ t_vector	rotate_init_ray(t_vector *v, t_vedro *vedro)
 	v1 = abscissa_rotation(v, vedro->alpha);
 	v1 = ordinate_rotation(&v1, vedro->beta);
 	v1 = aplikata_rotation(&v1, vedro->gamma);
-	v1 = initialize_norm_process(&v1);
+	v1 = optim_settup(&v1);
 	return (v1);
 }
 
@@ -40,11 +40,11 @@ void	ray_trace(t_vedro *vedro)
 	{
 		while (vedro->x < WIDTH)
 		{
-			ray.dir = rotate_init_ray(&ray.dir, vedro);
+			ray.dir = xyz_rotation(&ray.dir, vedro);
 			if ((cur_obj = find_intersection(vedro, &ray, 800000)) != -1)
 			{
 				shadow_ray = find_shadow_ray(vedro, &ray);
-				light_d = sqrt(vector_dot(&vedro->dist_to_light,
+				light_d = sqrt(mult_matrix(&vedro->dist_to_light,
 					&vedro->dist_to_light));
 				fill_screen(vedro, &shadow_ray, light_d, cur_obj);
 			}
@@ -65,7 +65,7 @@ int		find_intersection(t_vedro *vedro, t_ray *ray, double light_d)
 	i = 0;
 	while (i < 6)
 	{
-		if (intersection(&vedro->obj[i], ray, vedro, light_d) == 1)
+		if (objects_hinteracting(&vedro->obj[i], ray, vedro, light_d) == 1)
 			cur_obj = i;
 		i++;
 	}
@@ -76,11 +76,11 @@ t_ray	find_shadow_ray(t_vedro *vedro, t_ray *ray)
 {
 	t_ray	shadow_ray;
 
-	vedro->scaled = multiply_vector_with_skalar(&ray->dir, vedro->t);
-	vedro->new_start = vector_add(&ray->start, &vedro->scaled);
+	vedro->scaled = mult_matx_skl(&ray->dir, vedro->t);
+	vedro->new_start = summ_matrix(&ray->start, &vedro->scaled);
 	vedro->dist_to_light = min_matrix(&vedro->light.pos, &vedro->new_start);
 	shadow_ray.start = vedro->new_start;
-	shadow_ray.dir = initialize_norm_process(&vedro->dist_to_light);
+	shadow_ray.dir = optim_settup(&vedro->dist_to_light);
 	return (shadow_ray);
 }
 
@@ -89,17 +89,17 @@ void	draw_object(t_vedro *vedro, int cur_obj, t_vector *dir)
 	t_vector	norm;
 	t_color		color_dark;
 
-	norm = normal(&(vedro->obj[cur_obj]), &vedro->new_start, dir);
+	norm = optimization(&(vedro->obj[cur_obj]), &vedro->new_start, dir);
 	color_dark = vedro->obj[cur_obj].color;
-	color_dark.tr = 230 * (1 - find_cos_vectors(&norm, dir));
-	if (find_cos_vectors(&norm, dir) >= 0.94)
+	color_dark.tr = 230 * (1 - calc_angle_matrix(&norm, dir));
+	if (calc_angle_matrix(&norm, dir) >= 0.94)
 	{
 		color_dark.r += (255 - color_dark.r)
-			* find_cos_vectors(&norm, dir) * 15;
+			* calc_angle_matrix(&norm, dir) * 15;
 		color_dark.g += (255 - color_dark.g)
-			* find_cos_vectors(&norm, dir) * 15;
+			* calc_angle_matrix(&norm, dir) * 15;
 		color_dark.b += (255 - color_dark.b)
-			* find_cos_vectors(&norm, dir) * 15;
+			* calc_angle_matrix(&norm, dir) * 15;
 	}
 	insert_pixel(vedro, vedro->x, vedro->y, &color_dark);
 }

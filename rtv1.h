@@ -148,36 +148,29 @@ void		ft_init_env(t_vedro *vedro);
 void		instantiating_fentity(t_vedro *vedro);
 void		instantiating_sentity(t_vedro *vedro);
 void		instantiating_tentity(t_vedro *vedro);
-
-void			insert_pixel(t_vedro *vedro, int x, int y, t_color *color);
-
-int				intersect_sphere(t_ray *ray, void *obj,
-						t_vedro *vedro, double d);
-int				intersect_plane(t_ray *ray, void *obj,
-						t_vedro *vedro, double d);
-int				intersect_cylinder(t_ray *ray, t_cylinder *cyl,
-						t_vedro *vedro, double d);
-int				intersect_cone(t_ray *ray, t_cone *cone,
-						t_vedro *vedro, double d);
-int				intersection(t_obj *obj, t_ray *ray,
+void		insert_pixel(t_vedro *vedro, int x, int y, t_color *color);
+int			objects_hinteracting(t_obj *obj, t_ray *ray,
 						t_vedro *vedro, double d);
 
-t_vector		cylinder_normal(t_vector *start, t_cylinder *cyl);
-t_vector		sphere_normal(t_vector *start, t_sphere *sphere);
-t_vector		plane_normal(t_plane *plane, t_vector *lil);
-t_vector		cone_normal(t_vector *start, t_cone *cone);
-t_vector		normal(t_obj *obj, t_vector *start, t_vector *lil);
+t_vector	abscissa_rotation(t_vector *dir, double angle);
+t_vector	ordinate_rotation(t_vector *dir, double angle);
+t_vector	aplikata_rotation(t_vector *dir, double angle);
+t_vector	rotate(t_vector *v, double alpha, double beta, double gamma);
 
-t_vector		cone_abc(t_ray *ray, t_cone *cone, t_vector *dist);
-t_vector		cyl_abc(t_ray *ray, t_cylinder *cyl, t_vector *dist);
+t_vector	min_matrix(t_vector *v1, t_vector *v2);
+t_vector	mult_matx_skl(t_vector *v, double scale);
+t_vector	summ_matrix(t_vector *v1, t_vector *v2);
+t_vector	optim_settup(t_vector *vector);
+double		mult_matrix(t_vector *v1, t_vector *v2);
 
-t_vector		abscissa_rotation(t_vector *dir, double angle);
-t_vector		ordinate_rotation(t_vector *dir, double angle);
-t_vector		aplikata_rotation(t_vector *dir, double angle);
-t_vector		rotate(t_vector *v, double alpha, double beta, double gamma);
+t_vector	optimization(t_obj *obj, t_vector *start, t_vector *lil);
+
+t_vector		trg_math(t_ray *ray, t_cone *cone, t_vector *dist);
+t_vector		tdrect_math(t_ray *ray, t_cylinder *cyl, t_vector *dist);
+t_vector		xyz_rotation(t_vector *v, t_vedro *vedro);
+
 
 void			ray_trace(t_vedro *vedro);
-t_vector		rotate_init_ray(t_vector *v, t_vedro *vedro);
 int				find_intersection(t_vedro *vedro, t_ray *ray, double light_d);
 t_ray			find_shadow_ray(t_vedro *vedro, t_ray *ray);
 void			draw_object(t_vedro *vedro, int cur_obj, t_vector *dir);
@@ -186,11 +179,6 @@ void			fill_screen(t_vedro *vedro, t_ray *shadow_ray,
 
 void			draw(t_vedro *vedro);
 
-t_vector			min_matrix(t_vector *v1, t_vector *v2);
-t_vector			multiply_vector_with_skalar(t_vector *v, double scale);
-t_vector			vector_add(t_vector *v1, t_vector *v2);
-t_vector			initialize_norm_process(t_vector *vector);
-double				vector_dot(t_vector *v1, t_vector *v2);
-double				find_cos_vectors(t_vector *v1, t_vector *v2);
+double			calc_angle_matrix(t_vector *v1, t_vector *v2);
 
 #endif

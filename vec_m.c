@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-int			intersect_sphere(t_ray *ray, void *obj, t_vedro *vedro, double d)
+int			tdcircle_interacting(t_ray *ray, void *obj, t_vedro *vedro, double d)
 {
 	t_vector	dist;
 	t_vector	ab;
@@ -23,8 +23,8 @@ int			intersect_sphere(t_ray *ray, void *obj, t_vedro *vedro, double d)
 	ret = 0;
 	sphere = (t_sphere *)(obj);
 	dist = min_matrix(&sphere->centre, &ray->start);
-	ab.x = vector_dot(&ray->dir, &dist);
-	ab.y = ab.x * ab.x - vector_dot(&dist, &dist) + sphere->radius2;
+	ab.x = mult_matrix(&ray->dir, &dist);
+	ab.y = ab.x * ab.x - mult_matrix(&dist, &dist) + sphere->radius2;
 	if (ab.y < 0.0)
 		return (0);
 	tt.x = ab.x - sqrt(ab.y);
@@ -39,7 +39,7 @@ int			intersect_sphere(t_ray *ray, void *obj, t_vedro *vedro, double d)
 	return (ret);
 }
 
-int			intersect_cylinder(t_ray *ray, t_cylinder *cyl,
+int			tdparaleg_interacting(t_ray *ray, t_cylinder *cyl,
 				t_vedro *vedro, double d)
 {
 	t_vector	dist;
@@ -50,8 +50,8 @@ int			intersect_cylinder(t_ray *ray, t_cylinder *cyl,
 
 	ret = 0;
 	dist = min_matrix(&cyl->pos, &ray->start);
-	cyl->rot = initialize_norm_process(&cyl->rot);
-	abc = cyl_abc(ray, cyl, &dist);
+	cyl->rot = optim_settup(&cyl->rot);
+	abc = tdrect_math(ray, cyl, &dist);
 	discr = abc.y * abc.y - 4 * abc.x * abc.z;
 	if (discr < 0)
 		return (ret);
@@ -67,7 +67,7 @@ int			intersect_cylinder(t_ray *ray, t_cylinder *cyl,
 	return (ret);
 }
 
-int			intersect_cone(t_ray *ray, t_cone *cone, t_vedro *vedro, double d)
+int			trg_interacting(t_ray *ray, t_cone *cone, t_vedro *vedro, double d)
 {
 	t_vector	dist;
 	t_vector	abc;
@@ -77,8 +77,8 @@ int			intersect_cone(t_ray *ray, t_cone *cone, t_vedro *vedro, double d)
 
 	ret = 0;
 	dist = min_matrix(&cone->pos, &ray->start);
-	cone->rot = initialize_norm_process(&cone->rot);
-	abc = cone_abc(ray, cone, &dist);
+	cone->rot = optim_settup(&cone->rot);
+	abc = trg_math(ray, cone, &dist);
 	discr = abc.y * abc.y - 4 * abc.x * abc.z;
 	if (discr < 0)
 		return (ret);
@@ -94,7 +94,7 @@ int			intersect_cone(t_ray *ray, t_cone *cone, t_vedro *vedro, double d)
 	return (ret);
 }
 
-int			intersect_plane(t_ray *ray, void *obj, t_vedro *vedro, double d)
+int			surface_interacting(t_ray *ray, void *obj, t_vedro *vedro, double d)
 {
 	double		denom;
 	t_vector	pl;
@@ -102,17 +102,15 @@ int			intersect_plane(t_ray *ray, void *obj, t_vedro *vedro, double d)
 	double		t;
 
 	plane = (t_plane *)(obj);
-	denom = vector_dot(&plane->normal, &ray->dir);
+	denom = mult_matrix(&plane->normal, &ray->dir);
 	if (fabs(denom) > 0.001)
 	{
 		pl = min_matrix(&plane->point, &ray->start);
-		t = vector_dot(&pl, &plane->normal) / denom;
+		t = mult_matrix(&pl, &plane->normal) / denom;
 		if (t > 0.001 && t < vedro->t)
 		{
 			vedro->t = t - 0.1;
-			if (vedro->t > d)
-				return (0);
-			return (1);
+			return (vedro->t > d) ? 0 : 1;
 		}
 		else
 			return (0);
@@ -120,18 +118,18 @@ int			intersect_plane(t_ray *ray, void *obj, t_vedro *vedro, double d)
 	return (0);
 }
 
-int			intersection(t_obj *obj, t_ray *ray, t_vedro *vedro, double d)
+int			objects_hinteracting(t_obj *obj, t_ray *ray, t_vedro *vedro, double d)
 {
-	int		ret;
+	int		res_code;
 
-	ret = 0;
-	if (obj->type == 1)
-		ret = intersect_sphere(ray, obj->obj, vedro, d);
-	else if (obj->type == 2)
-		ret = intersect_cylinder(ray, obj->obj, vedro, d);
-	else if (obj->type == 4)
-		ret = intersect_plane(ray, obj->obj, vedro, d);
-	else if (obj->type == 3)
-		ret = intersect_cone(ray, obj->obj, vedro, d);
-	return (ret);
+	res_code = 0;
+	if (obj->type == SPHERE)
+		res_code = tdcircle_interacting(ray, obj->obj, vedro, d);
+	else if (obj->type == CYLINDER)
+		res_code = tdparaleg_interacting(ray, obj->obj, vedro, d);
+	else if (obj->type == CONUS)
+		res_code = trg_interacting(ray, obj->obj, vedro, d);
+	else if (obj->type == PLANE)
+		res_code = surface_interacting(ray, obj->obj, vedro, d);
+	return (res_code);
 }

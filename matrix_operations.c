@@ -22,7 +22,7 @@ t_vector	min_matrix(t_vector *v1, t_vector *v2)
 	return (res);
 }
 
-t_vector	multiply_vector_with_skalar(t_vector *v, double scale)
+t_vector	mult_matx_skl(t_vector *v, double scale)
 {
 	t_vector res;
 
@@ -32,7 +32,7 @@ t_vector	multiply_vector_with_skalar(t_vector *v, double scale)
 	return (res);
 }
 
-t_vector	vector_add(t_vector *v1, t_vector *v2)
+t_vector	summ_matrix(t_vector *v1, t_vector *v2)
 {
 	t_vector res;
 
@@ -42,17 +42,17 @@ t_vector	vector_add(t_vector *v1, t_vector *v2)
 	return (res);
 }
 
-t_vector	initialize_norm_process(t_vector *vector)
+t_vector	optim_settup(t_vector *vector)
 {
 	t_vector	norm;
 	double		length;
 
-	length = sqrt(vector_dot(vector, vector));
-	norm = multiply_vector_with_skalar(vector, 1 / length);
+	length = sqrt(mult_matrix(vector, vector));
+	norm = mult_matx_skl(vector, 1 / length);
 	return (norm);
 }
 
-double		vector_dot(t_vector *v1, t_vector *v2)
+double		mult_matrix(t_vector *v1, t_vector *v2)
 {
 	double res;
 
