@@ -16,9 +16,9 @@ t_matrix	min_matrix(t_matrix *v1, t_matrix *v2)
 {
 	t_matrix res;
 
-	res.x = v1->x - v2->x;
-	res.y = v1->y - v2->y;
-	res.z = v1->z - v2->z;
+	res.ab = v1->ab - v2->ab;
+	res.ord = v1->ord - v2->ord;
+	res.apl = v1->apl - v2->apl;
 	return (res);
 }
 
@@ -26,9 +26,9 @@ t_matrix	mult_matx_skl(t_matrix *v, double scale)
 {
 	t_matrix res;
 
-	res.x = v->x * scale;
-	res.y = v->y * scale;
-	res.z = v->z * scale;
+	res.ab = v->ab * scale;
+	res.ord = v->ord * scale;
+	res.apl = v->apl * scale;
 	return (res);
 }
 
@@ -36,9 +36,9 @@ t_matrix	summ_matrix(t_matrix *v1, t_matrix *v2)
 {
 	t_matrix res;
 
-	res.x = v1->x + v2->x;
-	res.y = v1->y + v2->y;
-	res.z = v1->z + v2->z;
+	res.ab = v1->ab + v2->ab;
+	res.ord = v1->ord + v2->ord;
+	res.apl = v1->apl + v2->apl;
 	return (res);
 }
 
@@ -56,6 +56,6 @@ double		mult_matrix(t_matrix *v1, t_matrix *v2)
 {
 	double res;
 
-	res = (v1->x * v2->x) + (v1->y * v2->y) + (v1->z * v2->z);
+	res = (v1->ab * v2->ab) + (v1->ord * v2->ord) + (v1->apl * v2->apl);
 	return (res);
 }

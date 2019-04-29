@@ -47,9 +47,9 @@
 
 typedef struct		s_matrix
 {
-	double			x;
-	double			y;
-	double			z;
+	double			ab; // x
+	double			ord; // y
+	double			apl; // z
 }					t_matrix;
 
 typedef struct	s_paint

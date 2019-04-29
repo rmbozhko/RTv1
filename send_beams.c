@@ -16,9 +16,9 @@ t_matrix	xyz_rotation(t_matrix *v, t_env *env)
 {
 	t_matrix v1;
 
-	v->x = (2 * ((env->x + 0.5) * INV_WIDTH) - 1) * ANGLE * ASP_RATIO;
-	v->y = (1 - 2 * ((env->y + 0.5) * INV_HEIGHT)) * ANGLE;
-	v->z = 1;
+	v->ab = (2 * ((env->x + 0.5) * INV_WIDTH) - 1) * ANGLE * ASP_RATIO;
+	v->ord = (1 - 2 * ((env->y + 0.5) * INV_HEIGHT)) * ANGLE;
+	v->apl = 1;
 	v1 = abscissa_rotation(v, env->alpha);
 	v1 = ordinate_rotation(&v1, env->beta);
 	v1 = aplikata_rotation(&v1, env->gamma);
@@ -33,9 +33,9 @@ void	pull_beam(t_env *env)
 	double		light_d;
 	int			cur_obj;
 
-	ray.start.x = 800;
-	ray.start.y = 500;
-	ray.start.z = -2100;
+	ray.start.ab = 800;
+	ray.start.ord = 500;
+	ray.start.apl = -2100;
 	while (env->y < HEIGHT)
 	{
 		while (env->x < WIDTH)

@@ -23,16 +23,16 @@ int			tdcircle_interacting(t_beam *ray, void *obj, t_env *env, double d)
 	ret = 0;
 	sphere = (t_tdcircle *)(obj);
 	dist = min_matrix(&sphere->centre, &ray->start);
-	ab.x = mult_matrix(&ray->dir, &dist);
-	ab.y = ab.x * ab.x - mult_matrix(&dist, &dist) + sphere->radius2;
-	if (ab.y < 0.0)
+	ab.ab = mult_matrix(&ray->dir, &dist);
+	ab.ord = ab.ab * ab.ab - mult_matrix(&dist, &dist) + sphere->radius2;
+	if (ab.ord < 0.0)
 		return (0);
-	tt.x = ab.x - sqrt(ab.y);
-	tt.y = ab.x + sqrt(ab.y);
-	(tt.x > 0.001) && (tt.x < env->t) ? ret = 1 : 0;
-	(tt.x > 0.001) && (tt.x < env->t) ? env->t = tt.x : 0;
-	(tt.y > 0.001) && (tt.y < env->t) ? ret = 1 : 0;
-	(tt.y > 0.001) && (tt.y < env->t) ? env->t = tt.y : 0;
+	tt.ab = ab.ab - sqrt(ab.ord);
+	tt.ord = ab.ab + sqrt(ab.ord);
+	(tt.ab > 0.001) && (tt.ab < env->t) ? ret = 1 : 0;
+	(tt.ab > 0.001) && (tt.ab < env->t) ? env->t = tt.ab : 0;
+	(tt.ord > 0.001) && (tt.ord < env->t) ? ret = 1 : 0;
+	(tt.ord > 0.001) && (tt.ord < env->t) ? env->t = tt.ord : 0;
 	env->t -= 0.01;
 	if (env->t > d)
 		return (0);
@@ -52,15 +52,15 @@ int			tdparaleg_interacting(t_beam *ray, t_tdparaleg *cyl,
 	dist = min_matrix(&cyl->pos, &ray->start);
 	cyl->rot = optim_settup(&cyl->rot);
 	abc = tdrect_math(ray, cyl, &dist);
-	discr = abc.y * abc.y - 4 * abc.x * abc.z;
+	discr = abc.ord * abc.ord - 4 * abc.ab * abc.apl;
 	if (discr < 0)
 		return (ret);
-	t.x = (abc.y - sqrt(discr)) / (2 * abc.x);
-	t.y = (abc.y + sqrt(discr)) / (2 * abc.x);
-	(t.x > 0.001) && (t.x < env->t) ? ret = 1 : 0;
-	(t.x > 0.001) && (t.x < env->t) ? env->t = t.x : 0;
-	(t.y > 0.001) && (t.y < env->t) ? ret = 1 : 0;
-	(t.y > 0.001) && (t.y < env->t) ? env->t = t.y : 0;
+	t.ab = (abc.ord - sqrt(discr)) / (2 * abc.ab);
+	t.ord = (abc.ord + sqrt(discr)) / (2 * abc.ab);
+	(t.ab > 0.001) && (t.ab < env->t) ? ret = 1 : 0;
+	(t.ab > 0.001) && (t.ab < env->t) ? env->t = t.ab : 0;
+	(t.ord > 0.001) && (t.ord < env->t) ? ret = 1 : 0;
+	(t.ord > 0.001) && (t.ord < env->t) ? env->t = t.ord : 0;
 	env->t -= 0.01;
 	if (env->t > d)
 		return (0);
@@ -79,15 +79,15 @@ int			trg_interacting(t_beam *ray, t_trg *cone, t_env *env, double d)
 	dist = min_matrix(&cone->pos, &ray->start);
 	cone->rot = optim_settup(&cone->rot);
 	abc = trg_math(ray, cone, &dist);
-	discr = abc.y * abc.y - 4 * abc.x * abc.z;
+	discr = abc.ord * abc.ord - 4 * abc.ab * abc.apl;
 	if (discr < 0)
 		return (ret);
-	t.x = (abc.y - sqrt(discr)) / (2 * abc.x);
-	t.y = (abc.y + sqrt(discr)) / (2 * abc.x);
-	(t.x > 0.001) && (t.x < env->t) ? ret = 1 : 0;
-	(t.x > 0.001) && (t.x < env->t) ? env->t = t.x : 0;
-	(t.y > 0.001) && (t.y < env->t) ? ret = 1 : 0;
-	(t.y > 0.001) && (t.y < env->t) ? env->t = t.y : 0;
+	t.ab = (abc.ord - sqrt(discr)) / (2 * abc.ab);
+	t.ord = (abc.ord + sqrt(discr)) / (2 * abc.ab);
+	(t.ab > 0.001) && (t.ab < env->t) ? ret = 1 : 0;
+	(t.ab > 0.001) && (t.ab < env->t) ? env->t = t.ab : 0;
+	(t.ord > 0.001) && (t.ord < env->t) ? ret = 1 : 0;
+	(t.ord > 0.001) && (t.ord < env->t) ? env->t = t.ord : 0;
 	env->t -= 0.01;
 	if (env->t > d)
 		return (0);

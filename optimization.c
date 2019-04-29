@@ -66,9 +66,9 @@ t_matrix	optimization(t_entity *obj, t_matrix *start, t_matrix *lil)
 {
 	t_matrix norm;
 
-	norm.x = 0;
-	norm.y = 0;
-	norm.z = 0;
+	norm.ab = 0;
+	norm.ord = 0;
+	norm.apl = 0;
 	if (obj->type == SPHERE)
 		return (optimization_for_tdcircle(start, (t_tdcircle *)(obj->obj)));
 	else if (obj->type == CYLINDER)
