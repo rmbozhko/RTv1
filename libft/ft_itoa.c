@@ -3,49 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yvasin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rbozhko <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/05 19:25:44 by yvasin            #+#    #+#             */
-/*   Updated: 2017/01/05 20:46:45 by yvasin           ###   ########.fr       */
+/*   Created: 2016/12/03 11:25:23 by rbozhko           #+#    #+#             */
+/*   Updated: 2016/12/26 14:52:33 by rbozhko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_nblen(int n)
+char	*ft_itoa(int n)
 {
-	if (n < 0)
-		return (1 + ft_nblen(-n));
-	if (n < 10)
-		return (1);
-	return (1 + ft_nblen(n / 10));
-}
-
-char		*ft_itoa(int n)
-{
-	int		neg;
-	int		length;
 	int		i;
-	char	*res;
+	int		num_length;
+	char	*result;
 
-	if (n == -2147483648)
+	i = n;
+	num_length = ft_numlen(n);
+	result = ft_strnew(num_length);
+	if (n == (-2147483647 - 1))
 		return (ft_strdup("-2147483648"));
-	neg = (n < 0 ? 1 : 0);
-	length = ft_nblen(n);
-	res = (char*)malloc(sizeof(char) * (length + 1));
-	if (res)
+	if (result != NULL)
 	{
-		n = (n < 0 ? -n : n);
-		i = length - 1;
-		while (i >= neg)
-		{
-			res[i] = (n % 10) + '0';
-			n = n / 10;
-			i--;
-		}
-		if (neg)
-			res[0] = '-';
-		res[length] = '\0';
+		if (i < 0)
+			i = (-1) * n;
+		result[--num_length] = ((i % 10) + 48);
+		while (i /= 10)
+			result[--num_length] = ((i % 10) + 48);
+		if (n < 0)
+			result[0] = '-';
+		return (result);
 	}
-	return (res);
+	return (NULL);
 }

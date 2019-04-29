@@ -1,31 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memmove.c                                       :+:      :+:    :+:   */
+/*   example.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yvasin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rbozhko <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/06 18:05:07 by yvasin            #+#    #+#             */
-/*   Updated: 2017/01/06 18:43:50 by yvasin           ###   ########.fr       */
+/*   Created: 2016/12/26 13:23:56 by rbozhko           #+#    #+#             */
+/*   Updated: 2016/12/26 14:53:38 by rbozhko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t n)
+void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	void *save;
+	const char	*srce;
+	char		*dest;
+	size_t		a;
 
-	save = dst;
-	if (dst > src)
+	srce = src;
+	dest = dst;
+	a = 0;
+	if (dest > srce)
 	{
-		while (n-- > 0)
-			*((unsigned char*)(dst + n)) = *((unsigned char*)(src + n));
+		a = len - 1;
+		while ((int)a >= 0)
+		{
+			dest[a] = srce[a];
+			a--;
+		}
+		return (dst);
 	}
-	else if (dst < src)
+	while (a < len)
 	{
-		while (n-- > 0)
-			*((unsigned char*)(dst++)) = *((unsigned char*)(src++));
+		dest[a] = srce[a];
+		a++;
 	}
-	return (save);
+	return (dst);
 }

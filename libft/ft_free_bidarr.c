@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_abs.c                                           :+:      :+:    :+:   */
+/*   ft_free_bidarr.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yvasin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rbozhko <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/06 16:38:25 by yvasin            #+#    #+#             */
-/*   Updated: 2017/03/06 16:38:26 by yvasin           ###   ########.fr       */
+/*   Created: 2017/08/16 14:38:51 by rbozhko           #+#    #+#             */
+/*   Updated: 2017/08/16 14:38:54 by rbozhko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int			ft_abs(int value)
+void				ft_free_bidarr(char **arr, size_t len)
 {
-	if (value > 0)
-		return (value);
-	else if (value < 0)
-		return (-value);
-	else
-		return (value);
+	size_t		i;
+
+	i = 0;
+	while (i < len)
+	{
+		ft_strdel(&arr[i]);
+		i++;
+	}
+	free(arr);
+	arr = NULL;
 }

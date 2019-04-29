@@ -3,28 +3,27 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yvasin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rbozhko <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/06 18:52:01 by yvasin            #+#    #+#             */
-/*   Updated: 2017/01/06 19:01:13 by yvasin           ###   ########.fr       */
+/*   Created: 2016/11/28 15:49:06 by rbozhko           #+#    #+#             */
+/*   Updated: 2016/12/26 11:58:48 by rbozhko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_memcmp(const void *s1, const void *s2, size_t n)
+int		ft_memcmp(const void *str1, const void *str2, size_t n)
 {
-	const unsigned char *kek1;
-	const unsigned char *kek2;
+	size_t i;
 
-	kek1 = s1;
-	kek2 = s2;
-	if (n == 0)
-		return (0);
-	while (n-- > 1 && *kek1 == *kek2)
+	i = 0;
+	while (i < n)
 	{
-		kek1++;
-		kek2++;
+		if (*(unsigned char*)(str1 + i) > *(unsigned char*)(str2 + i))
+			return (*(unsigned char*)(str1 + i) - *(unsigned char*)(str2 + i));
+		else if (*(unsigned char*)(str1 + i) < *(unsigned char*)(str2 + i))
+			return (*(unsigned char*)(str1 + i) - *(unsigned char*)(str2 + i));
+		i++;
 	}
-	return (*kek1 - *kek2);
+	return (0);
 }

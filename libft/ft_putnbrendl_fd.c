@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_islower.c                                       :+:      :+:    :+:   */
+/*   ft_putnbrendl_fd.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yvasin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rbozhko <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/15 18:09:42 by yvasin            #+#    #+#             */
-/*   Updated: 2017/01/15 18:10:29 by yvasin           ###   ########.fr       */
+/*   Created: 2017/11/12 18:34:08 by rbozhko           #+#    #+#             */
+/*   Updated: 2017/11/12 18:34:09 by rbozhko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_islower(int c)
+void		ft_putnbrendl_fd(int num, int fd)
 {
-	return ('a' <= c && c <= 'z');
+	if (fd >= 0 && fd <= 4096)
+	{
+		ft_putnbr_fd(num, fd);
+		ft_putchar_fd('\n', fd);
+	}
 }

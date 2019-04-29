@@ -3,33 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strstr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yvasin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rbozhko <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/07 18:55:40 by yvasin            #+#    #+#             */
-/*   Updated: 2017/01/07 19:01:07 by yvasin           ###   ########.fr       */
+/*   Created: 2016/11/29 13:41:19 by rbozhko           #+#    #+#             */
+/*   Updated: 2016/12/03 12:53:16 by rbozhko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strstr(const char *big, const char *little)
+char	*ft_strstr(const char *haystack, const char *needle)
 {
-	const char *save1;
-	const char *save2;
+	size_t	i;
+	size_t	k;
+	size_t	j;
 
-	save2 = little;
-	while (*big != '\0')
+	i = 0;
+	j = 0;
+	k = -1;
+	if (needle[i] != '\0' && haystack[i] != '\0')
 	{
-		save1 = big;
-		while (*little != '\0' && *big == *little)
+		while (haystack[i] != '\0')
 		{
-			++big;
-			++little;
+			while (haystack[i++] == needle[j++])
+			{
+				if (j == ft_strlen(needle))
+					return ((char*)haystack + (i - j));
+			}
+			j = 0;
+			i = ++k;
 		}
-		if (*little == '\0')
-			return ((char*)save1);
-		big = save1 + 1;
-		little = save2;
 	}
-	return (*little == '\0' ? (char*)big : NULL);
+	if (needle[0] == '\0')
+		return ((char*)haystack);
+	return (NULL);
 }

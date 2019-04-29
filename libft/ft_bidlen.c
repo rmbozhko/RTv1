@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdel2.c                                       :+:      :+:    :+:   */
+/*   ft_bidlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yvasin <yvasin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rbozhko <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/25 15:44:28 by yvasin            #+#    #+#             */
-/*   Updated: 2017/03/25 15:45:24 by yvasin           ###   ########.fr       */
+/*   Created: 2017/08/01 11:02:28 by rbozhko           #+#    #+#             */
+/*   Updated: 2017/08/01 11:03:04 by rbozhko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_strdel2(char **str)
+size_t			ft_bidlen(char **arr)
 {
-	int i;
+	size_t		i;
 
 	i = 0;
-	while (str[i])
-	{
-		free(str[i]);
-		str[i] = NULL;
+	while (arr[i])
 		i++;
-	}
-	free(str);
-	str = NULL;
+	return (i);
 }

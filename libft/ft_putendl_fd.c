@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putendl_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yvasin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rbozhko <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/30 18:12:51 by yvasin            #+#    #+#             */
-/*   Updated: 2017/01/03 16:01:26 by yvasin           ###   ########.fr       */
+/*   Created: 2016/12/03 15:44:03 by rbozhko           #+#    #+#             */
+/*   Updated: 2016/12/03 15:45:59 by rbozhko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	ft_putendl_fd(char const *s, int fd)
 {
-	if (s)
+	if (s && (fd >= 0 && fd <= 4096))
 	{
 		ft_putstr_fd(s, fd);
-		ft_putchar_fd('\n', fd);
+		write(fd, "\n", 1);
 	}
 }

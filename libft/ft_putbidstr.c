@@ -1,32 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_revstr.c                                        :+:      :+:    :+:   */
+/*   ft_putbidstr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yvasin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rbozhko <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/15 17:51:32 by yvasin            #+#    #+#             */
-/*   Updated: 2017/01/15 18:00:03 by yvasin           ###   ########.fr       */
+/*   Created: 2017/08/01 11:00:10 by rbozhko           #+#    #+#             */
+/*   Updated: 2017/08/01 11:01:29 by rbozhko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_revstr(char *s)
+void		ft_putbidstr(char **arr)
 {
-	size_t	start;
-	size_t	end;
-	char	temp;
+	size_t		i;
 
-	start = 0;
-	end = ft_strlen(s) - 1;
-	while (start < end)
+	i = 0;
+	while (arr[i])
 	{
-		temp = s[start];
-		s[start] = s[end];
-		s[end] = temp;
-		start++;
-		end--;
+		ft_putstr(arr[i]);
+		ft_putchar('\n');
+		i++;
 	}
-	return (s);
 }

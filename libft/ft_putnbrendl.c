@@ -1,28 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize.c                                       :+:      :+:    :+:   */
+/*   ft_putnbrendl.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yvasin <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: rbozhko <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/15 17:39:42 by yvasin            #+#    #+#             */
-/*   Updated: 2017/01/15 17:42:06 by yvasin           ###   ########.fr       */
+/*   Created: 2017/11/12 18:33:56 by rbozhko           #+#    #+#             */
+/*   Updated: 2017/11/12 18:34:03 by rbozhko          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-unsigned int	ft_lstsize(t_list *list)
+void		ft_putnbrendl(int num)
 {
-	unsigned int	i;
-
-	i = 0;
-	if (!list)
-		return (i);
-	while (list)
-	{
-		i++;
-		list = list->next;
-	}
-	return (i);
+	ft_putnbr(num);
+	ft_putchar('\n');
 }
