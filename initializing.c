@@ -40,24 +40,24 @@ void		ft_init_env(t_env *env, unsigned width, unsigned height)
 int			tdcircle_inter(t_beam *b, void *ent, t_env *env, double bound)
 {
 	t_matrix	dist;
-	t_matrix	ab;
-	t_matrix	tt;
+	t_matrix	miss;
+	t_matrix	calc;
 	t_tdcircle	*sphere;
 	int			ret;
 
 	ret = 0;
 	sphere = (t_tdcircle *)(ent);
 	dist = min_matrix(&sphere->location, &b->anfang);
-	ab.ab = mult_matrix(&b->richtung, &dist);
-	ab.ord = ab.ab * ab.ab - mult_matrix(&dist, &dist) + sphere->div_diameter;
-	if (ab.ord < 0.0)
+	miss.ab = mult_matrix(&b->richtung, &dist);
+	miss.ord = miss.ab * miss.ab - mult_matrix(&dist, &dist) + sphere->div_diameter;
+	if (miss.ord < 0.0)
 		return (0);
-	tt.ab = ab.ab - sqrt(ab.ord);
-	tt.ord = ab.ab + sqrt(ab.ord);
-	(tt.ab > 0.001) && (tt.ab < env->skl) ? ret = 1 : 0;
-	(tt.ab > 0.001) && (tt.ab < env->skl) ? env->skl = tt.ab : 0;
-	(tt.ord > 0.001) && (tt.ord < env->skl) ? ret = 1 : 0;
-	(tt.ord > 0.001) && (tt.ord < env->skl) ? env->skl = tt.ord : 0;
+	calc.ab = miss.ab - sqrt(miss.ord);
+	calc.ord = miss.ab + sqrt(miss.ord);
+	(calc.ab > 0.001) && (calc.ab < env->skl) ? ret = 1 : 0;
+	(calc.ab > 0.001) && (calc.ab < env->skl) ? env->skl = calc.ab : 0;
+	(calc.ord > 0.001) && (calc.ord < env->skl) ? ret = 1 : 0;
+	(calc.ord > 0.001) && (calc.ord < env->skl) ? env->skl = calc.ord : 0;
 	env->skl -= 0.01;
 	return ((env->skl > bound) ? 0 : ret);
 }

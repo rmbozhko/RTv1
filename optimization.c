@@ -53,10 +53,10 @@ unsigned char		*ft_get_proper(t_env *env)
 t_matrix			xyz_rotation(t_env *env, t_matrix *richtung)
 {
 	richtung->apl = 1;
-	richtung->ord = (1 - 2 * ((Y + 0.5) * get_height_inverse(env))) * ANGLE;
+	richtung->ord = (1 - 2 * ((Y + 0.5) * get_height_inverse(env))) * CORNER;
 	env->skl = MAGIC_NUM;
 	richtung->ab = (2 * ((X + 0.5) * get_width_inverse(env)) - 1)
-		* ANGLE * ASP_RATIO;
+		* CORNER * MIDD_RAT;
 	return (optim_settup(richtung));
 }
 

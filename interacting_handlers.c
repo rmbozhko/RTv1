@@ -14,20 +14,20 @@
 
 int			surface_inter(t_beam *b, void *ent, t_env *env, double bound)
 {
-	double		denom;
+	double		l;
 	t_matrix	pl;
 	t_surface	*surface;
-	double		t;
+	double		temp;
 
 	surface = (t_surface *)(ent);
-	denom = mult_matrix(&surface->optimize_rate, &b->richtung);
-	if (fabs(denom) > 0.001)
+	l = mult_matrix(&surface->optimize_rate, &b->richtung);
+	if (fabs(l) > 0.001)
 	{
 		pl = min_matrix(&surface->dot, &b->anfang);
-		t = mult_matrix(&pl, &surface->optimize_rate) / denom;
-		if (t > 0.001 && t < env->skl)
+		temp = mult_matrix(&pl, &surface->optimize_rate) / l;
+		if (temp > 0.001 && temp < env->skl)
 		{
-			env->skl = t - 0.1;
+			env->skl = temp - 0.1;
 			return (env->skl > bound) ? 0 : 1;
 		}
 	}

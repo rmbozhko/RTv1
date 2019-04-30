@@ -39,25 +39,25 @@ int			determine_interacting(t_env *env, double glow_dist, t_beam *beam)
 
 int			trg_interacting(t_beam *beam, t_trg *trg, t_env *env, double bound)
 {
-	t_matrix	dist;
-	t_matrix	abc;
-	t_matrix	t;
+	t_matrix	rec;
+	t_matrix	temp;
+	t_matrix	miss;
 	double		discr;
 	int			ret;
 
 	ret = 0;
-	dist = min_matrix(&trg->location, &beam->anfang);
+	rec = min_matrix(&trg->location, &beam->anfang);
 	trg->coord_move = optim_settup(&trg->coord_move);
-	abc = trg_math(trg, beam, &dist);
-	discr = abc.ord * abc.ord - 4 * abc.ab * abc.apl;
+	temp = trg_math(trg, beam, &rec);
+	discr = temp.ord * temp.ord - 4 * temp.ab * temp.apl;
 	if (discr < 0)
 		return (ret);
-	t.ab = (abc.ord - sqrt(discr)) / (2 * abc.ab);
-	t.ord = (abc.ord + sqrt(discr)) / (2 * abc.ab);
-	(t.ab > 0.001) && (t.ab < env->skl) ? ret = 1 : 0;
-	(t.ab > 0.001) && (t.ab < env->skl) ? env->skl = t.ab : 0;
-	(t.ord > 0.001) && (t.ord < env->skl) ? ret = 1 : 0;
-	(t.ord > 0.001) && (t.ord < env->skl) ? env->skl = t.ord : 0;
+	miss.ab = (temp.ord - sqrt(discr)) / (2 * temp.ab);
+	miss.ord = (temp.ord + sqrt(discr)) / (2 * temp.ab);
+	(miss.ab > 0.001) && (miss.ab < env->skl) ? ret = 1 : 0;
+	(miss.ab > 0.001) && (miss.ab < env->skl) ? env->skl = miss.ab : 0;
+	(miss.ord > 0.001) && (miss.ord < env->skl) ? ret = 1 : 0;
+	(miss.ord > 0.001) && (miss.ord < env->skl) ? env->skl = miss.ord : 0;
 	env->skl -= 0.01;
 	return ((env->skl > bound) ? 0 : ret);
 }

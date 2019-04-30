@@ -14,22 +14,22 @@
 
 void	instantiate_attributes(t_env *env)
 {
-	env->entities_strg[0].paint = BLUE;
+	env->entities_strg[0].paint = BLAUE;
 	env->entities_strg[0].ent = &env->tdparaleg_f;
 	env->entities_strg[0].ent_id = TDPARALEG;
-	env->entities_strg[1].paint = MAGENTA;
+	env->entities_strg[1].paint = MAGG;
 	env->entities_strg[1].ent = &env->tdcircle;
 	env->entities_strg[1].ent_id = TDCIRCLE;
-	env->entities_strg[2].paint = CYAN;
+	env->entities_strg[2].paint = PINK;
 	env->entities_strg[2].ent = &env->tdparaleg_s;
 	env->entities_strg[2].ent_id = TDPARALEG;
-	env->entities_strg[3].paint = WHITE;
+	env->entities_strg[3].paint = WEISS;
 	env->entities_strg[3].ent = &env->surface_f;
 	env->entities_strg[3].ent_id = SURFACE;
-	env->entities_strg[4].paint = WHITE;
+	env->entities_strg[4].paint = WEISS;
 	env->entities_strg[4].ent = &env->surface_s;
 	env->entities_strg[4].ent_id = SURFACE;
-	env->entities_strg[5].paint = RED;
+	env->entities_strg[5].paint = ROT;
 	env->entities_strg[5].ent = &env->trg;
 	env->entities_strg[5].ent_id = TRG;
 }

@@ -32,27 +32,27 @@ double		ft_calc_absciss(t_beam *beam, bool flag)
 int			tdparaleg_interacting(t_beam *b, t_tdparaleg *tdparal,
 				t_env *env, double d)
 {
-	t_matrix	dist;
-	t_matrix	abc;
-	t_matrix	t;
+	t_matrix	temp;
+	t_matrix	lol;
+	t_matrix	mtrx;
 	double		discr;
-	int			ret;
+	int			back;
 
-	ret = 0;
-	dist = min_matrix(&tdparal->location, &b->anfang);
+	back = 0;
+	temp = min_matrix(&tdparal->location, &b->anfang);
 	tdparal->coord_move = optim_settup(&tdparal->coord_move);
-	abc = tdparaleg_math(&dist, b, tdparal);
-	discr = abc.ord * abc.ord - 4 * abc.ab * abc.apl;
+	lol = tdparaleg_math(&temp, b, tdparal);
+	discr = lol.ord * lol.ord - 4 * lol.ab * lol.apl;
 	if (discr < 0)
-		return (ret);
-	t.ab = (abc.ord - sqrt(discr)) / (2 * abc.ab);
-	t.ord = (abc.ord + sqrt(discr)) / (2 * abc.ab);
-	(t.ab > 0.001) && (t.ab < env->skl) ? ret = 1 : 0;
-	(t.ab > 0.001) && (t.ab < env->skl) ? env->skl = t.ab : 0;
-	(t.ord > 0.001) && (t.ord < env->skl) ? ret = 1 : 0;
-	(t.ord > 0.001) && (t.ord < env->skl) ? env->skl = t.ord : 0;
+		return (back);
+	mtrx.ab = (lol.ord - sqrt(discr)) / (2 * lol.ab);
+	mtrx.ord = (lol.ord + sqrt(discr)) / (2 * lol.ab);
+	(mtrx.ab > 0.001) && (mtrx.ab < env->skl) ? back = 1 : 0;
+	(mtrx.ab > 0.001) && (mtrx.ab < env->skl) ? env->skl = mtrx.ab : 0;
+	(mtrx.ord > 0.001) && (mtrx.ord < env->skl) ? back = 1 : 0;
+	(mtrx.ord > 0.001) && (mtrx.ord < env->skl) ? env->skl = mtrx.ord : 0;
 	env->skl -= 0.01;
-	return ((env->skl > d) ? 0 : ret);
+	return ((env->skl > d) ? 0 : back);
 }
 
 t_matrix	trg_math(t_trg *trg, t_beam *beam, t_matrix *ziel)

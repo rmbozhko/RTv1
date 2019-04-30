@@ -45,18 +45,18 @@
 # define X env->x
 # define Y env->y
 
-# define FOV 60
-# define ASP_RATIO (env->width / (double)env->height)
-# define ANGLE (tan((FOV / 2 * M_PI / 180.0)))
+# define NUMBER 60
+# define MIDD_RAT (env->width / (double)env->height)
+# define CORNER (tan((NUMBER / 2 * M_PI / 180.0)))
 
-# define RED (t_paint){0, 0, 255, env->clarity_coef}
-# define GREEN (t_paint){0, 255, 0, env->clarity_coef}
-# define BLUE (t_paint){255, 0, 0, env->clarity_coef}
-# define CYAN (t_paint){255, 255, 0, env->clarity_coef}
-# define YELLOW (t_paint){0, 255, 255, env->clarity_coef}
-# define MAGENTA (t_paint){255, 0, 255, env->clarity_coef}
-# define WHITE (t_paint){255, 255, 255, env->clarity_coef}
-# define BLACK (t_paint){10, 10, 10, env->clarity_coef}
+# define ROT (t_paint){0, 0, 255, env->clarity_coef}
+# define GRUEN (t_paint){0, 255, 0, env->clarity_coef}
+# define BLAUE (t_paint){255, 0, 0, env->clarity_coef}
+# define PINK (t_paint){255, 255, 0, env->clarity_coef}
+# define GELB (t_paint){0, 255, 255, env->clarity_coef}
+# define MAGG (t_paint){255, 0, 255, env->clarity_coef}
+# define WEISS (t_paint){255, 255, 255, env->clarity_coef}
+# define SCHWARZ (t_paint){10, 10, 10, env->clarity_coef}
 
 typedef struct		s_matrix
 {
