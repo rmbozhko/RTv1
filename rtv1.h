@@ -18,6 +18,8 @@
 # define MINUS 78
 # define MAGIC_NUM 200000.0
 # define ITS_MAGIC 8000000
+# define MAX_OBJ_NUM 6
+# define MAX_UCHAR 255
 
 # define SPHERE 1
 # define CYLINDER 2
@@ -169,10 +171,10 @@ double		calc_angle_matrix(t_matrix *v1, t_matrix *v2);
 
 t_matrix	trg_math(t_beam *ray, t_trg *cone, t_matrix *dist);
 t_matrix	tdrect_math(t_beam *ray, t_tdparaleg *cyl, t_matrix *dist);
-t_matrix	xyz_rotation(t_matrix *v, t_env *env);
+t_matrix	xyz_rotation(t_env *env, t_matrix *richtung);
 void		depict_entity(t_env *env, int cur_obj, t_matrix *dir);
 
-int			determine_interacting(t_env *env, t_beam *ray, double light_d);
+int			determine_interacting(t_env *env, double glow_dist, t_beam *beam);
 t_beam		determine_sbeam(t_env *env);
 void		process_beam(t_env *env, int cho_entity);
 

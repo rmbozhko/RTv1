@@ -15,7 +15,7 @@ void		ft_init_env(t_env *env, unsigned width, unsigned height)
 		env->e = 0;
 		env->data = mlx_get_data_addr(env->img, &env->bpp,
 			&env->sline, &env->e);
-		env->clarity_coef = 255;
+		env->clarity_coef = MAX_UCHAR;
 		audio_setup(env);
 		play_main_theme(env);
 		instantiating_fentity(env);
