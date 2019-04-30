@@ -38,14 +38,14 @@
 # define ASP_RATIO (env->width / (double)env->height)
 # define ANGLE (tan((FOV / 2 * M_PI / 180.0)))
 
-# define RED (t_paint){0, 0, 255, 0}
-# define GREEN (t_paint){0, 255, 0, 0}
-# define BLUE (t_paint){255, 0, 0, 0}
-# define CYAN (t_paint){255, 255, 0, 0}
-# define YELLOW (t_paint){0, 255, 255, 0}
-# define MAGENTA (t_paint){255, 0, 255, 0}
-# define WHITE (t_paint){255, 255, 255, 0}
-# define BLACK (t_paint){10, 10, 10, 0}
+# define RED (t_paint){0, 0, 255, env->clarity_coef}
+# define GREEN (t_paint){0, 255, 0, env->clarity_coef}
+# define BLUE (t_paint){255, 0, 0, env->clarity_coef}
+# define CYAN (t_paint){255, 255, 0, env->clarity_coef}
+# define YELLOW (t_paint){0, 255, 255, env->clarity_coef}
+# define MAGENTA (t_paint){255, 0, 255, env->clarity_coef}
+# define WHITE (t_paint){255, 255, 255, env->clarity_coef}
+# define BLACK (t_paint){10, 10, 10, env->clarity_coef}
 
 typedef struct		s_matrix
 {
@@ -106,7 +106,7 @@ typedef struct	s_trg
 
 typedef struct	s_entity
 {
-	void				*ent; //entity
+	void				*ent;
 	int					ent_id;
 	t_paint				paint;
 	struct s_entity		*entity;
