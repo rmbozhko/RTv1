@@ -13,15 +13,15 @@ FILE		*ft_get_file(void)
 	return (outfile);
 }
 
-void		ft_init_st(struct jpeg_compress_struct *c, FILE *o)
+void		ft_init_st(t_env *env, struct jpeg_compress_struct *c, FILE *o)
 {
 	struct jpeg_error_mgr		jerr;
 
 	c->err = jpeg_std_error(&jerr);
 	jpeg_create_compress(c);
 	jpeg_stdio_dest(c, o);
-	c->image_width = WIDTH;
-	c->image_height = HEIGHT;
+	c->image_width = env->width;
+	c->image_height = env->height;
 	c->input_components = 3;
 	c->in_color_space = JCS_RGB;
 	jpeg_set_defaults(c);
@@ -37,9 +37,9 @@ unsigned char		*ft_get_proper(t_env *env)
 
 	i = 0;
 	j = 0;
-	len = HEIGHT * env->sline;
-	temp = (unsigned char*)malloc(sizeof(char) * HEIGHT * WIDTH * 3 + 1);
-	ft_bzero(temp, sizeof(char) * HEIGHT * WIDTH * 3 + 1);
+	len = env->height * env->sline;
+	temp = (unsigned char*)malloc(sizeof(char) * env->height * env->width * 3 + 1);
+	ft_bzero(temp, sizeof(char) * env->height * env->width * 3 + 1);
 	while (i < len && j < len)
 	{
 		if (((j + 1) % 4) == 0)
@@ -60,7 +60,7 @@ int			ft_make_printscreen(t_env *env)
 	unsigned char					*temp;
 
 	outfile = ft_get_file();
-	ft_init_st(&cinfo, outfile);
+	ft_init_st(env, &cinfo, outfile);
 	temp = ft_get_proper(env);
 	while (cinfo.next_scanline < cinfo.image_height)
 	{

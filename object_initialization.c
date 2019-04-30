@@ -70,4 +70,17 @@ void	instantiating_tentity(t_env *env)
 	env->glow.location.ab = 2900;
 	env->glow.location.ord = 1900;
 	env->glow.location.apl = -1600;
+		
+	// env->trg.location.ord = 300;
+	// env->trg.location.apl = 0;
+	// env->trg.coord_move.ab = 0;
+	// env->trg.coord_move.ord = 1;
+	// env->trg.coord_move.apl = 0;
+	// env->trg.corner = 10 * (M_PI / 180);
+	// env->entities_strg[6].paint = RED;
+	// env->entities_strg[6].ent = &env->trg;
+	// env->entities_strg[6].ent_id = 3;
+	// env->glow.location.ab = 3100;
+	// env->glow.location.ord = 2000;
+	// env->glow.location.apl = -1600;
 }

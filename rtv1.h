@@ -18,12 +18,16 @@
 # include "libft/libft.h"
 # include <mlx.h>
 # include "jpeglib/jpeglib.h"
+# include <SDL.h>
+# include "SDL_mixer.h"
 
-# define WIDTH 1900
-# define HEIGHT 1200
+
+# define USAGE "./rtv1 -w [uint] -h [uint]"
 # define BPP 32
 # define ESC 53
 # define P_LTTR 35
+# define PLUS 69
+# define MINUS 78
 # define MAGIC_NUM 200000.0
 
 # define SPHERE 1
@@ -31,10 +35,8 @@
 # define CONUS 3
 # define PLANE 4
 
-# define INV_WIDTH (1 / (double)WIDTH)
-# define INV_HEIGHT (1 / (double)HEIGHT)
 # define FOV 60
-# define ASP_RATIO (WIDTH / (double)HEIGHT)
+# define ASP_RATIO (env->width / (double)env->height)
 # define ANGLE (tan((FOV / 2 * M_PI / 180.0)))
 
 # define RED (t_paint){0, 0, 255, 0}
@@ -122,6 +124,7 @@ typedef struct	s_env
 	char		*data;
 	unsigned	width;
 	unsigned	height;
+	unsigned	clarity_coef;
 
 	int			x;
 	int			y;
@@ -133,13 +136,13 @@ typedef struct	s_env
 	t_surface	surface_f;
 	t_surface	surface_s;
 	t_trg		trg;
-	t_entity	entities_strg[6];
+	t_entity	entities_strg[7];
 
 	t_matrix	multpl_skl;
 	t_matrix	neues_anfang;
 	t_matrix	strecke_zur_licht;
-
 	double		skl;
+	Mix_Music	*main_theme;
 }				t_env;
 
 
@@ -176,11 +179,15 @@ void		depict_entity(t_env *env, int cur_obj, t_matrix *dir);
 
 int			determine_interacting(t_env *env, t_beam *ray, double light_d);
 t_beam		determine_sbeam(t_env *env, t_beam *ray);
-void		pull_beam(t_env *env);
+void		process_beam(t_env *env);
 
 FILE			*ft_get_file(void);
-void			ft_init_st(struct jpeg_compress_struct *c, FILE *o);
+void			ft_init_st(t_env *env, struct jpeg_compress_struct *c, FILE *o);
 unsigned char	*ft_get_proper(t_env *env);
 int				ft_make_printscreen(t_env *env);
+
+void			clean_up(t_env *env);
+void			play_main_theme(t_env *env);
+void			audio_setup(t_env *env);
 
 #endif

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "rtv1.h"
+#include <stdio.h>
 
 inline double		get_width_inverse(t_env *env)
 {
@@ -24,14 +25,13 @@ inline double		get_height_inverse(t_env *env)
 
 t_matrix	xyz_rotation(t_matrix *richtung, t_env *env)
 {
-	richtung->ab = (2 * ((env->x + 0.5) * INV_WIDTH) - 1) * ANGLE * ASP_RATIO;
-	richtung->ord = (1 - 2 * ((env->y + 0.5) * INV_HEIGHT)) * ANGLE;
+	richtung->ab = (2 * ((env->x + 0.5) * get_width_inverse(env)) - 1) * ANGLE * ASP_RATIO;
+	richtung->ord = (1 - 2 * ((env->y + 0.5) * get_height_inverse(env))) * ANGLE;
 	richtung->apl = 1;
-
 	return (optim_settup(richtung));
 }
 
-void	pull_beam(t_env *env)
+void	process_beam(t_env *env)
 {
 	t_beam		beam;
 	t_beam		beam_chorn;
@@ -41,9 +41,10 @@ void	pull_beam(t_env *env)
 	beam.anfang.ab = 800;
 	beam.anfang.ord = 500;
 	beam.anfang.apl = -2100;
-	while (env->y < HEIGHT)
+
+	while (env->y < (int)env->height)
 	{
-		while (env->x < WIDTH)
+		while (env->x < (int)env->width)
 		{
 			beam.richtung = xyz_rotation(&beam.richtung, env);
 			if ((cur_obj = determine_interacting(env, &beam, 800000)) != -1)
@@ -58,6 +59,7 @@ void	pull_beam(t_env *env)
 		env->x = 0;
 		env->y++;
 	}
+	mlx_put_image_to_window(env->mlx, env->win, env->img, 0, 0);
 }
 
 int		determine_interacting(t_env *env, t_beam *beam, double light_d)
@@ -68,9 +70,9 @@ int		determine_interacting(t_env *env, t_beam *beam, double light_d)
 	env->skl = MAGIC_NUM;
 	counter = -1;
 	id = -1;
-
 	while (++id < 6)
-		counter = (objects_hinteracting(&env->entities_strg[id], beam, env, light_d) == 1) ? id : counter;
+		counter = (objects_hinteracting(&env->entities_strg[id],
+			beam, env, light_d) == 1) ? id : counter;
 	return (counter);
 }
 
@@ -113,7 +115,7 @@ void	window_setting(t_env *env, t_beam *shadow_ray,
 		depict_entity(env, cur_obj, &shadow_ray->richtung);
 	else
 	{
-		env->entities_strg[cur_obj].paint.clarity = 255;
+		env->entities_strg[cur_obj].paint.clarity = env->clarity_coef;
 		insert_pixel(env, env->x, env->y, &(env->entities_strg[cur_obj].paint));
 	}
 }
