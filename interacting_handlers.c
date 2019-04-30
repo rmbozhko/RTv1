@@ -29,14 +29,12 @@ int			tdcircle_interacting(t_beam *ray, void *obj, t_env *env, double d)
 		return (0);
 	tt.ab = ab.ab - sqrt(ab.ord);
 	tt.ord = ab.ab + sqrt(ab.ord);
-	(tt.ab > 0.001) && (tt.ab < env->t) ? ret = 1 : 0;
-	(tt.ab > 0.001) && (tt.ab < env->t) ? env->t = tt.ab : 0;
-	(tt.ord > 0.001) && (tt.ord < env->t) ? ret = 1 : 0;
-	(tt.ord > 0.001) && (tt.ord < env->t) ? env->t = tt.ord : 0;
-	env->t -= 0.01;
-	if (env->t > d)
-		return (0);
-	return (ret);
+	(tt.ab > 0.001) && (tt.ab < env->skl) ? ret = 1 : 0;
+	(tt.ab > 0.001) && (tt.ab < env->skl) ? env->skl = tt.ab : 0;
+	(tt.ord > 0.001) && (tt.ord < env->skl) ? ret = 1 : 0;
+	(tt.ord > 0.001) && (tt.ord < env->skl) ? env->skl = tt.ord : 0;
+	env->skl -= 0.01;
+	return ((env->skl > d) ? 0 : ret);
 }
 
 int			tdparaleg_interacting(t_beam *ray, t_tdparaleg *cyl,
@@ -57,14 +55,12 @@ int			tdparaleg_interacting(t_beam *ray, t_tdparaleg *cyl,
 		return (ret);
 	t.ab = (abc.ord - sqrt(discr)) / (2 * abc.ab);
 	t.ord = (abc.ord + sqrt(discr)) / (2 * abc.ab);
-	(t.ab > 0.001) && (t.ab < env->t) ? ret = 1 : 0;
-	(t.ab > 0.001) && (t.ab < env->t) ? env->t = t.ab : 0;
-	(t.ord > 0.001) && (t.ord < env->t) ? ret = 1 : 0;
-	(t.ord > 0.001) && (t.ord < env->t) ? env->t = t.ord : 0;
-	env->t -= 0.01;
-	if (env->t > d)
-		return (0);
-	return (ret);
+	(t.ab > 0.001) && (t.ab < env->skl) ? ret = 1 : 0;
+	(t.ab > 0.001) && (t.ab < env->skl) ? env->skl = t.ab : 0;
+	(t.ord > 0.001) && (t.ord < env->skl) ? ret = 1 : 0;
+	(t.ord > 0.001) && (t.ord < env->skl) ? env->skl = t.ord : 0;
+	env->skl -= 0.01;
+	return ((env->skl > d) ? 0 : ret);
 }
 
 int			trg_interacting(t_beam *ray, t_trg *cone, t_env *env, double d)
@@ -84,14 +80,12 @@ int			trg_interacting(t_beam *ray, t_trg *cone, t_env *env, double d)
 		return (ret);
 	t.ab = (abc.ord - sqrt(discr)) / (2 * abc.ab);
 	t.ord = (abc.ord + sqrt(discr)) / (2 * abc.ab);
-	(t.ab > 0.001) && (t.ab < env->t) ? ret = 1 : 0;
-	(t.ab > 0.001) && (t.ab < env->t) ? env->t = t.ab : 0;
-	(t.ord > 0.001) && (t.ord < env->t) ? ret = 1 : 0;
-	(t.ord > 0.001) && (t.ord < env->t) ? env->t = t.ord : 0;
-	env->t -= 0.01;
-	if (env->t > d)
-		return (0);
-	return (ret);
+	(t.ab > 0.001) && (t.ab < env->skl) ? ret = 1 : 0;
+	(t.ab > 0.001) && (t.ab < env->skl) ? env->skl = t.ab : 0;
+	(t.ord > 0.001) && (t.ord < env->skl) ? ret = 1 : 0;
+	(t.ord > 0.001) && (t.ord < env->skl) ? env->skl = t.ord : 0;
+	env->skl -= 0.01;
+	return ((env->skl > d) ? 0 : ret);
 }
 
 int			surface_interacting(t_beam *ray, void *entity, t_env *env, double d)
@@ -107,13 +101,11 @@ int			surface_interacting(t_beam *ray, void *entity, t_env *env, double d)
 	{
 		pl = min_matrix(&plane->dot, &ray->anfang);
 		t = mult_matrix(&pl, &plane->optimize_rate) / denom;
-		if (t > 0.001 && t < env->t)
+		if (t > 0.001 && t < env->skl)
 		{
-			env->t = t - 0.1;
-			return (env->t > d) ? 0 : 1;
+			env->skl = t - 0.1;
+			return (env->skl > d) ? 0 : 1;
 		}
-		else
-			return (0);
 	}
 	return (0);
 }
@@ -122,8 +114,7 @@ int			objects_hinteracting(t_entity *entity, t_beam *ray, t_env *env, double d)
 {
 	int		res_code;
 
-	res_code = 0;
-	if (entity->ent_id == SPHERE)
+	if (!(res_code = 0) && entity->ent_id == SPHERE)
 		res_code = tdcircle_interacting(ray, entity->ent, env, d);
 	else if (entity->ent_id == CYLINDER)
 		res_code = tdparaleg_interacting(ray, entity->ent, env, d);

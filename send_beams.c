@@ -12,18 +12,23 @@
 
 #include "rtv1.h"
 
-t_matrix	xyz_rotation(t_matrix *v, t_env *env)
+inline double		get_width_inverse(t_env *env)
 {
-	t_matrix v1;
+	return ((double)(1.0 / (double)env->width));
+}
 
-	v->ab = (2 * ((env->x + 0.5) * INV_WIDTH) - 1) * ANGLE * ASP_RATIO;
-	v->ord = (1 - 2 * ((env->y + 0.5) * INV_HEIGHT)) * ANGLE;
-	v->apl = 1;
-	v1 = abscissa_rotation(v);
-	v1 = ordinate_rotation(&v1);
-	v1 = aplikata_rotation(&v1);
-	v1 = optim_settup(&v1);
-	return (v1);
+inline double		get_height_inverse(t_env *env)
+{
+	return ((double)(1.0 / (double)env->height));
+}
+
+t_matrix	xyz_rotation(t_matrix *richtung, t_env *env)
+{
+	richtung->ab = (2 * ((env->x + 0.5) * INV_WIDTH) - 1) * ANGLE * ASP_RATIO;
+	richtung->ord = (1 - 2 * ((env->y + 0.5) * INV_HEIGHT)) * ANGLE;
+	richtung->apl = 1;
+
+	return (optim_settup(richtung));
 }
 
 void	pull_beam(t_env *env)
@@ -44,8 +49,8 @@ void	pull_beam(t_env *env)
 			if ((cur_obj = determine_interacting(env, &beam, 800000)) != -1)
 			{
 				beam_chorn = determine_sbeam(env, &beam);
-				light_d = sqrt(mult_matrix(&env->dist_to_light,
-					&env->dist_to_light));
+				light_d = sqrt(mult_matrix(&env->strecke_zur_licht,
+					&env->strecke_zur_licht));
 				window_setting(env, &beam_chorn, light_d, cur_obj);
 			}
 			env->x++;
@@ -60,12 +65,12 @@ int		determine_interacting(t_env *env, t_beam *beam, double light_d)
 	int		counter;
 	int		id;
 
-	env->t = MAGIC_NUM;
+	env->skl = MAGIC_NUM;
 	counter = -1;
 	id = -1;
 
 	while (++id < 6)
-		counter = (objects_hinteracting(&env->obj[id], beam, env, light_d) == 1) ? id : counter;
+		counter = (objects_hinteracting(&env->entities_strg[id], beam, env, light_d) == 1) ? id : counter;
 	return (counter);
 }
 
@@ -73,11 +78,11 @@ t_beam	determine_sbeam(t_env *env, t_beam *beam)
 {
 	t_beam	beam_chorn;
 
-	env->scaled = mult_matx_skl(&beam->richtung, env->t);
-	env->new_start = summ_matrix(&beam->anfang, &env->scaled);
-	env->dist_to_light = min_matrix(&env->light.location, &env->new_start);
-	beam_chorn.anfang = env->new_start;
-	beam_chorn.richtung = optim_settup(&env->dist_to_light);
+	env->multpl_skl = mult_matx_skl(&beam->richtung, env->skl);
+	env->neues_anfang = summ_matrix(&beam->anfang, &env->multpl_skl);
+	env->strecke_zur_licht = min_matrix(&env->glow.location, &env->neues_anfang);
+	beam_chorn.anfang = env->neues_anfang;
+	beam_chorn.richtung = optim_settup(&env->strecke_zur_licht);
 	return (beam_chorn);
 }
 
@@ -86,8 +91,8 @@ void	depict_entity(t_env *env, int cur_obj, t_matrix *dir)
 	t_matrix	norm;
 	t_paint		color_dark;
 
-	norm = optimization(&(env->obj[cur_obj]), &env->new_start, dir);
-	color_dark = env->obj[cur_obj].paint;
+	norm = optimization(&(env->entities_strg[cur_obj]), &env->neues_anfang, dir);
+	color_dark = env->entities_strg[cur_obj].paint;
 	color_dark.clarity = 230 * (1 - calc_angle_matrix(&norm, dir));
 	if (calc_angle_matrix(&norm, dir) >= 0.94)
 	{
@@ -108,7 +113,7 @@ void	window_setting(t_env *env, t_beam *shadow_ray,
 		depict_entity(env, cur_obj, &shadow_ray->richtung);
 	else
 	{
-		env->obj[cur_obj].paint.clarity = 255;
-		insert_pixel(env, env->x, env->y, &(env->obj[cur_obj].paint));
+		env->entities_strg[cur_obj].paint.clarity = 255;
+		insert_pixel(env, env->x, env->y, &(env->entities_strg[cur_obj].paint));
 	}
 }

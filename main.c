@@ -25,7 +25,7 @@ int			main(void)
 {
 	t_env	env;
 	
-	ft_init_env(&env);
+	ft_init_env(&env, WIDTH, HEIGHT);
 	mlx_put_image_to_window(env.mlx, env.win, env.img, 0, 0);
 	mlx_hook(env.win, 2, 5, key_binds, &env);
 	mlx_loop(env.mlx);

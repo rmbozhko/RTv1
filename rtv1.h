@@ -120,28 +120,30 @@ typedef struct	s_env
 	int			sline;
 	int			e;
 	char		*data;
+	unsigned	width;
+	unsigned	height;
 
 	int			x;
 	int			y;
 
-	t_glow		light;
-	t_tdparaleg	cylinder;
-	t_tdparaleg	cylinder2;
-	t_tdcircle	sphere;
-	t_surface	plane;
-	t_surface	plane1;
-	t_trg		cone;
-	t_entity	obj[6];
+	t_glow		glow;
+	t_tdparaleg	tdparaleg_f;
+	t_tdparaleg	tdparaleg_s;
+	t_tdcircle	tdcircle;
+	t_surface	surface_f;
+	t_surface	surface_s;
+	t_trg		trg;
+	t_entity	entities_strg[6];
 
-	t_matrix	scaled;
-	t_matrix	new_start;
-	t_matrix	dist_to_light;
+	t_matrix	multpl_skl;
+	t_matrix	neues_anfang;
+	t_matrix	strecke_zur_licht;
 
-	double		t;
+	double		skl;
 }				t_env;
 
 
-void		ft_init_env(t_env *env);
+void		ft_init_env(t_env *env, unsigned widht, unsigned height);
 
 void		instantiating_fentity(t_env *env);
 void		instantiating_sentity(t_env *env);

@@ -2,72 +2,72 @@
 
 void	instantiating_fentity(t_env *env)
 {
-	env->cylinder.location.ab = 1200;
-	env->cylinder.location.ord = 500;
-	env->cylinder.location.apl = -400;
-	env->cylinder.coord_move.ab = 0;
-	env->cylinder.coord_move.ord = 1;
-	env->cylinder.coord_move.apl = 1;
-	env->cylinder.div_diameter = 100 * 100;
-	env->obj[0].paint = BLUE;
-	env->obj[0].ent = &env->cylinder;
-	env->obj[0].ent_id = 2;
-	env->sphere.centre.ab = 550;
-	env->sphere.centre.ord = 500;
-	env->sphere.centre.apl = 0;
-	env->sphere.div_diameter = 250 * 250;
-	env->obj[1].paint = MAGENTA;
-	env->obj[1].ent = &env->sphere;
-	env->obj[1].ent_id = 1;
+	env->tdparaleg_f.location.ab = 1200;
+	env->tdparaleg_f.location.ord = 500;
+	env->tdparaleg_f.location.apl = -400;
+	env->tdparaleg_f.coord_move.ab = 0;
+	env->tdparaleg_f.coord_move.ord = 1;
+	env->tdparaleg_f.coord_move.apl = 1;
+	env->tdparaleg_f.div_diameter = 100 * 100;
+	env->entities_strg[0].paint = BLUE;
+	env->entities_strg[0].ent = &env->tdparaleg_f;
+	env->entities_strg[0].ent_id = 2;
+	env->tdcircle.centre.ab = 550;
+	env->tdcircle.centre.ord = 500;
+	env->tdcircle.centre.apl = 0;
+	env->tdcircle.div_diameter = 250 * 250;
+	env->entities_strg[1].paint = MAGENTA;
+	env->entities_strg[1].ent = &env->tdcircle;
+	env->entities_strg[1].ent_id = 1;
 	instantiating_sentity(env);
 	instantiating_tentity(env);
 }
 
 void	instantiating_sentity(t_env *env)
 {
-	env->cylinder2.location.ab = 500;
-	env->cylinder2.location.ord = 500;
-	env->cylinder2.location.apl = 0;
-	env->cylinder2.coord_move.ab = 1;
-	env->cylinder2.coord_move.ord = 0;
-	env->cylinder2.coord_move.apl = 1;
-	env->cylinder2.div_diameter = 50 * 50;
-	env->obj[2].paint = CYAN;
-	env->obj[2].ent = &env->cylinder2;
-	env->obj[2].ent_id = 2;
-	env->plane.dot.ab = 400;
-	env->plane.dot.ord = 100;
-	env->plane.dot.apl = 2500;
-	env->plane.optimize_rate.ab = 0;
-	env->plane.optimize_rate.ord = 1;
-	env->plane.optimize_rate.apl = 0;
-	env->obj[3].paint = GREEN;
-	env->obj[3].ent = &env->plane;
-	env->obj[3].ent_id = 4;
+	env->tdparaleg_s.location.ab = 500;
+	env->tdparaleg_s.location.ord = 500;
+	env->tdparaleg_s.location.apl = 0;
+	env->tdparaleg_s.coord_move.ab = 1;
+	env->tdparaleg_s.coord_move.ord = 0;
+	env->tdparaleg_s.coord_move.apl = 1;
+	env->tdparaleg_s.div_diameter = 50 * 50;
+	env->entities_strg[2].paint = CYAN;
+	env->entities_strg[2].ent = &env->tdparaleg_s;
+	env->entities_strg[2].ent_id = 2;
+	env->surface_f.dot.ab = 400;
+	env->surface_f.dot.ord = 100;
+	env->surface_f.dot.apl = 2500;
+	env->surface_f.optimize_rate.ab = 0;
+	env->surface_f.optimize_rate.ord = 1;
+	env->surface_f.optimize_rate.apl = 0;
+	env->entities_strg[3].paint = GREEN;
+	env->entities_strg[3].ent = &env->surface_f;
+	env->entities_strg[3].ent_id = 4;
 }
 
 void	instantiating_tentity(t_env *env)
 {
-	env->plane1.dot.ab = 400;
-	env->plane1.dot.ord = 100;
-	env->plane1.dot.apl = 2500;
-	env->plane1.optimize_rate.ab = 0;
-	env->plane1.optimize_rate.ord = 0;
-	env->plane1.optimize_rate.apl = 1;
-	env->obj[4].paint = WHITE;
-	env->obj[4].ent = &env->plane1;
-	env->obj[4].ent_id = 4;
-	env->cone.location.ab = 550;
-	env->cone.location.ord = 500;
-	env->cone.location.apl = 0;
-	env->cone.coord_move.ab = -1;
-	env->cone.coord_move.ord = 1;
-	env->cone.coord_move.apl = 0;
-	env->cone.corner = 10 * (M_PI / 180);
-	env->obj[5].paint = RED;
-	env->obj[5].ent = &env->cone;
-	env->obj[5].ent_id = 3;
-	env->light.location.ab = 2900;
-	env->light.location.ord = 1900;
-	env->light.location.apl = -1600;
+	env->surface_s.dot.ab = 400;
+	env->surface_s.dot.ord = 100;
+	env->surface_s.dot.apl = 2500;
+	env->surface_s.optimize_rate.ab = 0;
+	env->surface_s.optimize_rate.ord = 0;
+	env->surface_s.optimize_rate.apl = 1;
+	env->entities_strg[4].paint = WHITE;
+	env->entities_strg[4].ent = &env->surface_s;
+	env->entities_strg[4].ent_id = 4;
+	env->trg.location.ab = 550;
+	env->trg.location.ord = 500;
+	env->trg.location.apl = 0;
+	env->trg.coord_move.ab = -1;
+	env->trg.coord_move.ord = 1;
+	env->trg.coord_move.apl = 0;
+	env->trg.corner = 10 * (M_PI / 180);
+	env->entities_strg[5].paint = RED;
+	env->entities_strg[5].ent = &env->trg;
+	env->entities_strg[5].ent_id = 3;
+	env->glow.location.ab = 2900;
+	env->glow.location.ord = 1900;
+	env->glow.location.apl = -1600;
 }

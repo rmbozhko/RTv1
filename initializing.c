@@ -12,7 +12,7 @@
 
 #include "rtv1.h"
 
-void		ft_init_env(t_env *env)
+void		ft_init_env(t_env *env, unsigned width, unsigned height)
 {
 	env->mlx = mlx_init();
 	env->win = mlx_new_window(env->mlx, WIDTH, HEIGHT, "RTv1");
@@ -21,6 +21,8 @@ void		ft_init_env(t_env *env)
 	env->img = mlx_new_image(env->mlx, WIDTH, HEIGHT);
 	env->bpp = BPP;
 	env->e = 0;
+	env->width = width;
+	env->height = height;
 	env->data = mlx_get_data_addr(env->img, &env->bpp,
 		&env->sline, &env->e);
 	instantiating_fentity(env);
