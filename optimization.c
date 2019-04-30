@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   find_normals.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yvasin <marvin@42.fr>                      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/07 20:22:28 by yvasin            #+#    #+#             */
-/*   Updated: 2017/05/07 20:22:29 by yvasin           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "rtv1.h"
 
 t_matrix	optimization_for_tdparaleg(t_matrix *start, t_tdparaleg *cyl)
@@ -31,8 +19,8 @@ t_matrix	optimization_for_tdcircle(t_matrix *start, t_tdcircle *sphere)
 	t_matrix	norm;
 	double		h;
 
-	norm = min_matrix(start, &sphere->centre);
-	h = mult_matrix(start, &sphere->centre);
+	norm = min_matrix(start, &sphere->location);
+	h = mult_matrix(start, &sphere->location);
 	norm = mult_matx_skl(&norm, 1 / h);
 	return (norm);
 }

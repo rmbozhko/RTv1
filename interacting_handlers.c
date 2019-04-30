@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   vec_m.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yvasin <marvin@42.fr>                      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/08 19:11:01 by yvasin            #+#    #+#             */
-/*   Updated: 2017/04/08 19:11:02 by yvasin           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "rtv1.h"
 
 int			tdcircle_interacting(t_beam *ray, void *obj, t_env *env, double d)
@@ -22,7 +10,7 @@ int			tdcircle_interacting(t_beam *ray, void *obj, t_env *env, double d)
 
 	ret = 0;
 	sphere = (t_tdcircle *)(obj);
-	dist = min_matrix(&sphere->centre, &ray->anfang);
+	dist = min_matrix(&sphere->location, &ray->anfang);
 	ab.ab = mult_matrix(&ray->richtung, &dist);
 	ab.ord = ab.ab * ab.ab - mult_matrix(&dist, &dist) + sphere->div_diameter;
 	if (ab.ord < 0.0)

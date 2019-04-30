@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   rtv1.h                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yvasin <marvin@42.fr>                      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/05 19:41:18 by yvasin            #+#    #+#             */
-/*   Updated: 2017/04/05 19:41:19 by yvasin           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef RTV1_H
 # define RTV1_H
 
@@ -85,7 +73,7 @@ typedef struct	s_tdcircle
 {
 	double		div_diameter;
 	t_paint		paint;
-	t_matrix	centre;
+	t_matrix	location;
 }				t_tdcircle;
 
 typedef struct	s_tdparaleg
@@ -107,9 +95,10 @@ typedef struct	s_trg
 
 typedef struct	s_entity
 {
-	void		*ent;
-	int			ent_id;
-	t_paint		paint;
+	void				*ent; //entity
+	int					ent_id;
+	t_paint				paint;
+	struct s_entity		*entity;
 }				t_entity;
 
 typedef struct	s_env

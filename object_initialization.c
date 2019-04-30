@@ -12,9 +12,9 @@ void	instantiating_fentity(t_env *env)
 	env->entities_strg[0].paint = BLUE;
 	env->entities_strg[0].ent = &env->tdparaleg_f;
 	env->entities_strg[0].ent_id = 2;
-	env->tdcircle.centre.ab = 550;
-	env->tdcircle.centre.ord = 500;
-	env->tdcircle.centre.apl = 0;
+	env->tdcircle.location.ab = 550;
+	env->tdcircle.location.ord = 500;
+	env->tdcircle.location.apl = 0;
 	env->tdcircle.div_diameter = 250 * 250;
 	env->entities_strg[1].paint = MAGENTA;
 	env->entities_strg[1].ent = &env->tdcircle;

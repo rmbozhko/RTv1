@@ -1,15 +1,3 @@
-#******************************************************************************#
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: yvasin <marvin@42.fr>                      +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2017/04/05 19:45:15 by yvasin            #+#    #+#              #
-#    Updated: 2017/04/05 19:45:16 by yvasin           ###   ########.fr        #
-#                                                                              #
-#******************************************************************************#
-
 NAME = RTv1
 
 SRC = main.c initializing.c interacting_handlers.c entities_math.c optimization.c send_beams.c matrix_operations.c xyz_movement.c object_initialization.c print_screen.c audio.c
