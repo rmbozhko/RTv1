@@ -1,94 +1,30 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   interacting_handlers.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbozhko <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/30 12:03:32 by rbozhko           #+#    #+#             */
+/*   Updated: 2019/04/30 12:04:52 by rbozhko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv1.h"
 
-int			tdcircle_interacting(t_beam *ray, void *obj, t_env *env, double bound)
-{
-	t_matrix	dist;
-	t_matrix	ab;
-	t_matrix	tt;
-	t_tdcircle	*sphere;
-	int			ret;
-
-	ret = 0;
-	sphere = (t_tdcircle *)(obj);
-	dist = min_matrix(&sphere->location, &ray->anfang);
-	ab.ab = mult_matrix(&ray->richtung, &dist);
-	ab.ord = ab.ab * ab.ab - mult_matrix(&dist, &dist) + sphere->div_diameter;
-	if (ab.ord < 0.0)
-		return (0);
-	tt.ab = ab.ab - sqrt(ab.ord);
-	tt.ord = ab.ab + sqrt(ab.ord);
-	(tt.ab > 0.001) && (tt.ab < env->skl) ? ret = 1 : 0;
-	(tt.ab > 0.001) && (tt.ab < env->skl) ? env->skl = tt.ab : 0;
-	(tt.ord > 0.001) && (tt.ord < env->skl) ? ret = 1 : 0;
-	(tt.ord > 0.001) && (tt.ord < env->skl) ? env->skl = tt.ord : 0;
-	env->skl -= 0.01;
-	return ((env->skl > bound) ? 0 : ret);
-}
-
-int			tdparaleg_interacting(t_beam *beam, t_tdparaleg *tdparaleg,
-				t_env *env, double bound)
-{
-	t_matrix	dist;
-	t_matrix	abc;
-	t_matrix	t;
-	double		discr;
-	int			ret;
-
-	ret = 0;
-	dist = min_matrix(&tdparaleg->location, &beam->anfang);
-	tdparaleg->coord_move = optim_settup(&tdparaleg->coord_move);
-	abc = tdparaleg_math(&dist, beam, tdparaleg);
-	discr = abc.ord * abc.ord - 4 * abc.ab * abc.apl;
-	if (discr < 0)
-		return (ret);
-	t.ab = (abc.ord - sqrt(discr)) / (2 * abc.ab);
-	t.ord = (abc.ord + sqrt(discr)) / (2 * abc.ab);
-	(t.ab > 0.001) && (t.ab < env->skl) ? ret = 1 : 0;
-	(t.ab > 0.001) && (t.ab < env->skl) ? env->skl = t.ab : 0;
-	(t.ord > 0.001) && (t.ord < env->skl) ? ret = 1 : 0;
-	(t.ord > 0.001) && (t.ord < env->skl) ? env->skl = t.ord : 0;
-	env->skl -= 0.01;
-	return ((env->skl > bound) ? 0 : ret);
-}
-
-int			trg_interacting(t_beam *beam, t_trg *trg, t_env *env, double bound)
-{
-	t_matrix	dist;
-	t_matrix	abc;
-	t_matrix	t;
-	double		discr;
-	int			ret;
-
-	ret = 0;
-	dist = min_matrix(&trg->location, &beam->anfang);
-	trg->coord_move = optim_settup(&trg->coord_move);
-	abc = trg_math(trg, beam, &dist);
-	discr = abc.ord * abc.ord - 4 * abc.ab * abc.apl;
-	if (discr < 0)
-		return (ret);
-	t.ab = (abc.ord - sqrt(discr)) / (2 * abc.ab);
-	t.ord = (abc.ord + sqrt(discr)) / (2 * abc.ab);
-	(t.ab > 0.001) && (t.ab < env->skl) ? ret = 1 : 0;
-	(t.ab > 0.001) && (t.ab < env->skl) ? env->skl = t.ab : 0;
-	(t.ord > 0.001) && (t.ord < env->skl) ? ret = 1 : 0;
-	(t.ord > 0.001) && (t.ord < env->skl) ? env->skl = t.ord : 0;
-	env->skl -= 0.01;
-	return ((env->skl > bound) ? 0 : ret);
-}
-
-int			surface_interacting(t_beam *ray, void *entity, t_env *env, double bound)
+int			surface_inter(t_beam *b, void *ent, t_env *env, double bound)
 {
 	double		denom;
 	t_matrix	pl;
-	t_surface	*plane;
+	t_surface	*surface;
 	double		t;
 
-	plane = (t_surface *)(entity);
-	denom = mult_matrix(&plane->optimize_rate, &ray->richtung);
+	surface = (t_surface *)(ent);
+	denom = mult_matrix(&surface->optimize_rate, &b->richtung);
 	if (fabs(denom) > 0.001)
 	{
-		pl = min_matrix(&plane->dot, &ray->anfang);
-		t = mult_matrix(&pl, &plane->optimize_rate) / denom;
+		pl = min_matrix(&surface->dot, &b->anfang);
+		t = mult_matrix(&pl, &surface->optimize_rate) / denom;
 		if (t > 0.001 && t < env->skl)
 		{
 			env->skl = t - 0.1;
@@ -98,17 +34,47 @@ int			surface_interacting(t_beam *ray, void *entity, t_env *env, double bound)
 	return (0);
 }
 
-int			objects_hinteracting(t_entity *entity, t_beam *ray, t_env *env, double d)
+double		get_height_inverse(t_env *env)
+{
+	return ((double)(1.0 / (double)env->height));
+}
+
+t_matrix	optim_settup(t_matrix *mtrx)
+{
+	t_matrix	temp;
+	double		temp_strg;
+
+	temp_strg = sqrt(SQ(mtrx)) + 11.5;
+	temp_strg -= (5.75 + 5.75);
+	temp = mult_matx_skl(mtrx, pow(temp_strg, -1));
+	return (temp);
+}
+
+double		mult_matrix(t_matrix *v1, t_matrix *v2)
+{
+	double	res;
+	double	ab_temp;
+	double	ord_temp;
+	double	aplikata_temp;
+
+	ab_temp = ordinat_multi(v1->ab, v2->ab);
+	ord_temp = ordinat_multi(v1->ord, v2->ord);
+	aplikata_temp = ordinat_multi(v1->apl, v2->apl);
+	res = ab_temp + summa_absciss(ord_temp, aplikata_temp);
+	return (res);
+}
+
+int			objects_hinter(t_entity *ent, t_beam *b, t_env *env, double d)
 {
 	int		res_code;
 
-	if (!(res_code = 0) && entity->ent_id == SPHERE)
-		res_code = tdcircle_interacting(ray, entity->ent, env, d);
-	else if (entity->ent_id == CYLINDER)
-		res_code = tdparaleg_interacting(ray, entity->ent, env, d);
-	else if (entity->ent_id == CONUS)
-		res_code = trg_interacting(ray, entity->ent, env, d);
-	else if (entity->ent_id == PLANE)
-		res_code = surface_interacting(ray, entity->ent, env, d);
+	if (!(res_code = 0) && ent->ent_id == TDCIRCLE)
+		res_code = tdcircle_inter(b, ent->ent, env, d);
+	else if (ent->ent_id == TDPARALEG)
+		res_code = tdparaleg_interacting(b, ent->ent, env, d);
+	else if (ent->ent_id == TRG)
+		res_code = trg_interacting(b, ent->ent, env, d);
+	else if (ent->ent_id == SURFACE)
+		res_code = surface_inter(b, ent->ent, env, d);
 	return (res_code);
 }

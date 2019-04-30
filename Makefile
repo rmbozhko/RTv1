@@ -1,6 +1,6 @@
 NAME = RTv1
 
-SRC = main.c initializing.c interacting_handlers.c entities_math.c optimization.c send_beams.c matrix_operations.c xyz_movement.c object_initialization.c print_screen.c audio.c
+SRC = main.c initializing.c interacting_handlers.c entities_math.c optimization.c send_beams.c matrix_operations.c xyz_movement.c object_initialization.c print_screen.c audio.c utils.c structures.c
 OBJ = $(SRC:.c=.o)
 
 CFLAGS = -O3 -Wall -Wextra -Werror

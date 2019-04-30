@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print_screen.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbozhko <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/30 11:46:37 by rbozhko           #+#    #+#             */
+/*   Updated: 2019/04/30 11:47:16 by rbozhko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv1.h"
 
 FILE		*ft_get_file(void)
@@ -13,43 +25,29 @@ FILE		*ft_get_file(void)
 	return (outfile);
 }
 
-void		ft_init_st(t_env *env, struct jpeg_compress_struct *c, FILE *o)
+double		summa_absciss(const double x1, const double x2)
 {
-	struct jpeg_error_mgr		jerr;
-
-	c->err = jpeg_std_error(&jerr);
-	jpeg_create_compress(c);
-	jpeg_stdio_dest(c, o);
-	c->image_width = env->width;
-	c->image_height = env->height;
-	c->input_components = 3;
-	c->in_color_space = JCS_RGB;
-	jpeg_set_defaults(c);
-	jpeg_start_compress(c, TRUE);
+	return (x1 + x2);
 }
 
-unsigned char		*ft_get_proper(t_env *env)
+double		summa_apliakta(const double z1, double z2)
 {
-	unsigned char		*temp;
-	size_t				i;
-	size_t				j;
-	unsigned long		len;
+	double	temp;
 
-	i = 0;
-	j = 0;
-	len = env->height * env->sline;
-	temp = (unsigned char*)malloc(sizeof(char) * env->height * env->width * 3 + 1);
-	ft_bzero(temp, sizeof(char) * env->height * env->width * 3 + 1);
-	while (i < len && j < len)
-	{
-		if (((j + 1) % 4) == 0)
-			j++;
-		temp[i++] = env->data[j + 2];
-		temp[i++] = env->data[j + 1];
-		temp[i++] = env->data[j];
-		j += 3;
-	}
-	return (temp);
+	temp = z2;
+	return (z1 + z2);
+}
+
+t_matrix	summ_matrix(t_matrix *v1, t_matrix *v2)
+{
+	t_matrix	res;
+	double		temp_ord;
+
+	res.ab = summa_absciss(v1->ab, v2->ab);
+	temp_ord = v1->ord + v2->ord;
+	res.ord = temp_ord;
+	res.apl = summa_apliakta(v1->apl, v2->apl);
+	return (res);
 }
 
 int			ft_make_printscreen(t_env *env)

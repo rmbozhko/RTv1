@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   initializing.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbozhko <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/30 12:01:56 by rbozhko           #+#    #+#             */
+/*   Updated: 2019/04/30 12:03:04 by rbozhko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rtv1.h"
 
 void		ft_init_env(t_env *env, unsigned width, unsigned height)
@@ -23,10 +35,51 @@ void		ft_init_env(t_env *env, unsigned width, unsigned height)
 	}
 	else
 		ft_throw_exception("Invalid window size parameters");
-	
 }
 
-void	insert_pixel(t_env *env, int x, int y, t_paint *color)
+int			tdcircle_inter(t_beam *b, void *ent, t_env *env, double bound)
+{
+	t_matrix	dist;
+	t_matrix	ab;
+	t_matrix	tt;
+	t_tdcircle	*sphere;
+	int			ret;
+
+	ret = 0;
+	sphere = (t_tdcircle *)(ent);
+	dist = min_matrix(&sphere->location, &b->anfang);
+	ab.ab = mult_matrix(&b->richtung, &dist);
+	ab.ord = ab.ab * ab.ab - mult_matrix(&dist, &dist) + sphere->div_diameter;
+	if (ab.ord < 0.0)
+		return (0);
+	tt.ab = ab.ab - sqrt(ab.ord);
+	tt.ord = ab.ab + sqrt(ab.ord);
+	(tt.ab > 0.001) && (tt.ab < env->skl) ? ret = 1 : 0;
+	(tt.ab > 0.001) && (tt.ab < env->skl) ? env->skl = tt.ab : 0;
+	(tt.ord > 0.001) && (tt.ord < env->skl) ? ret = 1 : 0;
+	(tt.ord > 0.001) && (tt.ord < env->skl) ? env->skl = tt.ord : 0;
+	env->skl -= 0.01;
+	return ((env->skl > bound) ? 0 : ret);
+}
+
+t_matrix	optimization_for_surface(t_matrix *lol, t_surface *surface)
+{
+	t_matrix temp;
+
+	temp = surface->optimize_rate;
+	if (calc_angle_matrix(&temp, lol) < 0)
+		temp = mult_matx_skl(&temp, -1);
+	return (temp);
+}
+
+void		clean_up(t_env *env)
+{
+	Mix_FreeMusic(env->main_theme);
+	Mix_CloseAudio();
+	SDL_Quit();
+}
+
+void		insert_pixel(t_env *env, int x, int y, t_paint *color)
 {
 	if ((x >= 0 && x < (int)env->width) && (y >= 0 && y < (int)env->height))
 	{

@@ -1,14 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   rtv1.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rbozhko <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/04/30 12:14:57 by rbozhko           #+#    #+#             */
+/*   Updated: 2019/04/30 12:16:59 by rbozhko          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef RTV1_H
 # define RTV1_H
 
+# include <stdio.h>
 # include <stdlib.h>
-# include <stdio.h> 
 # include "libft/libft.h"
 # include <mlx.h>
 # include "jpeglib/jpeglib.h"
 # include <SDL.h>
 # include "SDL_mixer.h"
-
 
 # define USAGE "./rtv1 -w [uint] -h [uint]"
 # define BPP 32
@@ -25,10 +36,10 @@
 # define TRG_TAN 1 + pow(tan(trg->corner), 2)
 # define SQUARE(X) pow(X, 2)
 
-# define SPHERE 1
-# define CYLINDER 2
-# define CONUS 3
-# define PLANE 4
+# define TDCIRCLE 1
+# define TDPARALEG 2
+# define TRG 3
+# define SURFACE 4
 
 # define SQ(X) mult_matrix(X, X)
 # define X env->x
@@ -137,7 +148,6 @@ typedef struct	s_env
 	t_surface	surface_s;
 	t_trg		trg;
 	t_entity	entities_strg[7];
-
 	t_matrix	multpl_skl;
 	t_matrix	neues_anfang;
 	t_matrix	s_of_l;
@@ -145,58 +155,70 @@ typedef struct	s_env
 	Mix_Music	*main_theme;
 }				t_env;
 
-
-t_matrix	optimization_for_surface(t_matrix *temp, t_surface *surface);
-t_matrix	optimization_for_tdcircle(t_matrix *mtrx, t_tdcircle *tdcircle);
-t_matrix	optimization_for_tdparaleg(t_matrix *mtrx, t_tdparaleg *tdparaleg);
-t_matrix	optimization_for_trg(t_matrix *mtrx, t_trg *trg);
-
-void		ft_build_mtrx(int abscissa, int ordinata, int aplikanta, t_matrix *mtrx);
-
-void		ft_init_env(t_env *env, unsigned widht, unsigned height);
-
-void		instantiating_fentity(t_env *env);
-void		instantiating_sentity(t_env *env);
-void		instantiating_tentity(t_env *env);
-void		insert_pixel(t_env *env, int x, int y, t_paint *color);
-int			objects_hinteracting(t_entity *obj, t_beam *ray,
-						t_env *env, double d);
-
-t_matrix	abscissa_rotation(t_matrix *dir);
-t_matrix	ordinate_rotation(t_matrix *dir);
-t_matrix	aplikata_rotation(t_matrix *dir);
-t_matrix	rotate(t_matrix *v, double alpha, double beta, double gamma);
-
-t_matrix	min_matrix(t_matrix *v1, t_matrix *v2);
-t_matrix	mult_matx_skl(t_matrix *v, double scale);
+int			objects_hinter(t_entity *ent, t_beam *b, t_env *env, double d);
+t_beam		determine_sbeam(t_env *env);
+t_matrix	optimization_for_tdcircle(t_matrix *start, t_tdcircle *sphere);
+int			tdcircle_inter(t_beam *b, void *ent, t_env *env, double bound);
+t_matrix	optimization_for_tdparaleg(t_matrix *mtrx, t_tdparaleg *td);
+unsigned char		*ft_get_proper(t_env *env);
+t_matrix			xyz_rotation(t_env *env, t_matrix *richtung);
+t_matrix			optimization_for_trg(t_matrix *mtrx, t_trg *trg);
+t_matrix			optimization(t_entity *ent, t_matrix *mtrx, t_matrix *temp);
+FILE		*ft_get_file(void);
+double		summa_absciss(const double x1, const double x2);
+double		summa_apliakta(const double z1, double z2);
 t_matrix	summ_matrix(t_matrix *v1, t_matrix *v2);
-t_matrix	optim_settup(t_matrix *vector);
-double		mult_matrix(t_matrix *v1, t_matrix *v2);
-
-t_matrix	optimization(t_entity *obj, t_matrix *start, t_matrix *lil);
-
-void		window_setting(double glow_dist, int cur_obj, t_beam *ch_beam,
-				t_env *env);
-
-double		calc_angle_matrix(t_matrix *v1, t_matrix *v2);
-
-
+int			ft_make_printscreen(t_env *env);
+void		audio_setup(t_env *env);
+void		play_main_theme(t_env *env);
+void		ft_build_mtrx(int abs, int ord, int apl, t_matrix *mtrx);
+double		ft_calc_ordinates(t_matrix *ziel, t_beam *beam);
+double		ft_calc_sordinates(t_trg *trg, t_beam *beam, t_matrix *ziel);
+double		ft_calc_absciss(t_beam *beam, bool flag);
 t_matrix	trg_math(t_trg *trg, t_beam *beam, t_matrix *ziel);
 t_matrix	tdparaleg_math(t_matrix *ziel, t_beam *beam, t_tdparaleg *tdparal);
-t_matrix	xyz_rotation(t_env *env, t_matrix *richtung);
-void		depict_entity(t_env *env, int cur_obj, t_matrix *dir);
-
+int			surface_inter(t_beam *b, void *ent, t_env *env, double bound);
+t_matrix	optim_settup(t_matrix *mtrx);
+double		mult_matrix(t_matrix *v1, t_matrix *v2);
+void		ft_init_env(t_env *env, unsigned width, unsigned height);
+int			tdcircle_inter(t_beam *b, void *ent, t_env *env, double bound);
+t_matrix	optimization_for_surface(t_matrix *lol, t_surface *surface);
+void		clean_up(t_env *env);
+void		insert_pixel(t_env *env, int x, int y, t_paint *color);
+void		ft_init_env(t_env *env, unsigned width, unsigned height);
+int			tdcircle_inter(t_beam *b, void *ent, t_env *env, double bound);
+t_matrix	optimization_for_surface(t_matrix *lol, t_surface *surface);
+void		clean_up(t_env *env);
+void		insert_pixel(t_env *env, int x, int y, t_paint *color);
+int			display_menu(t_env *env);
+int			key_binds(int keycode, t_env *env);
+double		angle_calculation_helper(t_matrix *v);
+double		calc_angle_matrix(t_matrix *v1, t_matrix *v2);
+double		aplikata_substraction(const double z1, double z2);
+double		aplikata_multi(const double z1, double z2);
+void		ft_init_st(t_env *env, struct jpeg_compress_struct *c, FILE *o);
+double		ordinat_substraction(const double y1, const double y2);
+t_matrix	aplikata_rotation(t_matrix *dir);
+t_matrix	min_matrix(t_matrix *v1, t_matrix *v2);
+double		ordinat_multi(const double y1, const double y2);
+t_matrix	mult_matx_skl(t_matrix *v, double scale);
+void		instantiate_attributes(t_env *env);
+void		instantiating_fentity(t_env *env);
+void		instantiate_entity(t_matrix *loc, t_matrix *c, int id);
+void		depict_entity(t_env *env, int ent, t_matrix *richt);
+unsigned	instantiate_div_diameter(int id, t_matrix *loc, t_matrix *coord);
+void		instantiate_glow(t_env *env);
+void		instantiating_other_entities(int id, t_matrix *loc, t_matrix *coord);
+double		get_width_inverse(t_env *env);
+double		get_height_inverse(t_env *env);
+t_matrix	ordinate_rotation(t_matrix *dir);
+void		update_dpaint(t_paint *paint, t_matrix *mtrx, t_matrix *richt);
+void		window_setting(double glow, int ent, t_beam *ch_beam, t_env *env);
+t_matrix	abscissa_rotation(t_matrix *dir);
 int			determine_interacting(t_env *env, double glow_dist, t_beam *beam);
-t_beam		determine_sbeam(t_env *env);
-void		process_beam(t_env *env, int cho_entity);
-
-FILE			*ft_get_file(void);
-void			ft_init_st(t_env *env, struct jpeg_compress_struct *c, FILE *o);
-unsigned char	*ft_get_proper(t_env *env);
-int				ft_make_printscreen(t_env *env);
-
-void			clean_up(t_env *env);
-void			play_main_theme(t_env *env);
-void			audio_setup(t_env *env);
+int			trg_interacting(t_beam *beam, t_trg *trg, t_env *env, double bound);
+void		process_beam(t_env *env, int entity);
+int			tdparaleg_interacting(t_beam *b, t_tdparaleg *tdparal,
+				t_env *env, double d);
 
 #endif
