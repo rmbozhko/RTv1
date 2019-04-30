@@ -20,6 +20,8 @@
 # define ITS_MAGIC 8000000
 # define MAX_OBJ_NUM 6
 # define MAX_UCHAR 255
+# define BOUND 0.94
+# define MULT_HELPER(X) X->ab * X->ab + X->ord * X->ord + X->apl * X->apl
 
 # define SPHERE 1
 # define CYLINDER 2

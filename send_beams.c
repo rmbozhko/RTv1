@@ -95,7 +95,7 @@ void	depict_entity(t_env *env, int cho_entity, t_matrix *richt)
 	mtrx = optimization(&(env->entities_strg[cho_entity]), &env->neues_anfang, richt);
 	dpaint = env->entities_strg[cho_entity].paint;
 	dpaint.clarity = 230 * (1 - calc_angle_matrix(&mtrx, richt));
-	if (calc_angle_matrix(&mtrx, richt) >= 0.94)
+	if (calc_angle_matrix(&mtrx, richt) >= BOUND)
 		update_dpaint(&dpaint, &mtrx, richt);
 	insert_pixel(env, X, Y, &dpaint);
 }
@@ -104,10 +104,10 @@ void	window_setting(double glow_dist, int cho_entity, t_beam *ch_beam, t_env *en
 {
 	t_beam		temp;
 
+	temp = determine_sbeam(env);
 	env->multpl_skl = mult_matx_skl(&ch_beam->richtung, env->skl);
 	env->neues_anfang = summ_matrix(&ch_beam->anfang, &env->multpl_skl);
 	env->s_of_l = min_matrix(&env->glow.location, &env->neues_anfang);
-	temp = determine_sbeam(env);
 	if (determine_interacting(env, glow_dist, &temp) == -1)
 		depict_entity(env, cho_entity, &temp.richtung);
 	else
