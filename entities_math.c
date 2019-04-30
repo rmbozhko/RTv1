@@ -16,14 +16,14 @@ t_matrix	trg_math(t_beam *ray, t_trg *cone, t_matrix *dist)
 {
 	t_matrix abc;
 
-	abc.ab = mult_matrix(&ray->dir, &ray->dir)
-	- (1 + pow(tan(cone->angle), 2))
-	* pow(mult_matrix(&ray->dir, &cone->rot), 2);
-	abc.ord = 2 * (mult_matrix(&ray->dir, dist)
-	- (1 + pow(tan(cone->angle), 2)) * (mult_matrix(&ray->dir, &cone->rot)
-	* mult_matrix(dist, &cone->rot)));
+	abc.ab = mult_matrix(&ray->richtung, &ray->richtung)
+	- (1 + pow(tan(cone->corner), 2))
+	* pow(mult_matrix(&ray->richtung, &cone->coord_move), 2);
+	abc.ord = 2 * (mult_matrix(&ray->richtung, dist)
+	- (1 + pow(tan(cone->corner), 2)) * (mult_matrix(&ray->richtung, &cone->coord_move)
+	* mult_matrix(dist, &cone->coord_move)));
 	abc.apl = mult_matrix(dist, dist)
-	- (1 + pow(tan(cone->angle), 2)) * pow(mult_matrix(dist, &cone->rot), 2);
+	- (1 + pow(tan(cone->corner), 2)) * pow(mult_matrix(dist, &cone->coord_move), 2);
 	return (abc);
 }
 
@@ -31,12 +31,12 @@ t_matrix	tdrect_math(t_beam *ray, t_tdparaleg *cyl, t_matrix *dist)
 {
 	t_matrix abc;
 
-	abc.ab = mult_matrix(&ray->dir, &ray->dir)
-		- pow(mult_matrix(&ray->dir, &cyl->rot), 2);
-	abc.ord = 2 * (mult_matrix(&ray->dir, dist)
-	- (mult_matrix(&ray->dir, &cyl->rot) * mult_matrix(dist, &cyl->rot)));
-	abc.apl = mult_matrix(dist, dist) - pow(mult_matrix(dist, &cyl->rot), 2)
-		- cyl->radius2;
+	abc.ab = mult_matrix(&ray->richtung, &ray->richtung)
+		- pow(mult_matrix(&ray->richtung, &cyl->coord_move), 2);
+	abc.ord = 2 * (mult_matrix(&ray->richtung, dist)
+	- (mult_matrix(&ray->richtung, &cyl->coord_move) * mult_matrix(dist, &cyl->coord_move)));
+	abc.apl = mult_matrix(dist, dist) - pow(mult_matrix(dist, &cyl->coord_move), 2)
+		- cyl->div_diameter;
 	return (abc);
 }
 

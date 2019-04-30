@@ -18,9 +18,6 @@ void		ft_init_env(t_env *env)
 	env->win = mlx_new_window(env->mlx, WIDTH, HEIGHT, "RTv1");
 	env->x = 0;
 	env->y = 0;
-	env->alpha = 0.0;
-	env->beta = 0.0;
-	env->gamma = 0.0;
 	env->img = mlx_new_image(env->mlx, WIDTH, HEIGHT);
 	env->bpp = BPP;
 	env->e = 0;
@@ -34,9 +31,9 @@ void	insert_pixel(t_env *env, int x, int y, t_paint *color)
 {
 	if ((x >= 0 && x < WIDTH) && (y >= 0 && y < HEIGHT))
 	{
-		env->data[((y * env->sline) + (x * 4))] = color->r;
-		env->data[((y * env->sline) + (x * 4)) + 1] = color->g;
-		env->data[((y * env->sline) + (x * 4)) + 2] = color->b;
-		env->data[((y * env->sline) + (x * 4)) + 3] = color->tr;
+		env->data[((y * env->sline) + (x * 4))] = color->red;
+		env->data[((y * env->sline) + (x * 4)) + 1] = color->green;
+		env->data[((y * env->sline) + (x * 4)) + 2] = color->blue;
+		env->data[((y * env->sline) + (x * 4)) + 3] = color->clarity;
 	}
 }

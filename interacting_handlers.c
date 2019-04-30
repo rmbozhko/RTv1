@@ -22,9 +22,9 @@ int			tdcircle_interacting(t_beam *ray, void *obj, t_env *env, double d)
 
 	ret = 0;
 	sphere = (t_tdcircle *)(obj);
-	dist = min_matrix(&sphere->centre, &ray->start);
-	ab.ab = mult_matrix(&ray->dir, &dist);
-	ab.ord = ab.ab * ab.ab - mult_matrix(&dist, &dist) + sphere->radius2;
+	dist = min_matrix(&sphere->centre, &ray->anfang);
+	ab.ab = mult_matrix(&ray->richtung, &dist);
+	ab.ord = ab.ab * ab.ab - mult_matrix(&dist, &dist) + sphere->div_diameter;
 	if (ab.ord < 0.0)
 		return (0);
 	tt.ab = ab.ab - sqrt(ab.ord);
@@ -49,8 +49,8 @@ int			tdparaleg_interacting(t_beam *ray, t_tdparaleg *cyl,
 	int			ret;
 
 	ret = 0;
-	dist = min_matrix(&cyl->pos, &ray->start);
-	cyl->rot = optim_settup(&cyl->rot);
+	dist = min_matrix(&cyl->location, &ray->anfang);
+	cyl->coord_move = optim_settup(&cyl->coord_move);
 	abc = tdrect_math(ray, cyl, &dist);
 	discr = abc.ord * abc.ord - 4 * abc.ab * abc.apl;
 	if (discr < 0)
@@ -76,8 +76,8 @@ int			trg_interacting(t_beam *ray, t_trg *cone, t_env *env, double d)
 	int			ret;
 
 	ret = 0;
-	dist = min_matrix(&cone->pos, &ray->start);
-	cone->rot = optim_settup(&cone->rot);
+	dist = min_matrix(&cone->location, &ray->anfang);
+	cone->coord_move = optim_settup(&cone->coord_move);
 	abc = trg_math(ray, cone, &dist);
 	discr = abc.ord * abc.ord - 4 * abc.ab * abc.apl;
 	if (discr < 0)
@@ -94,19 +94,19 @@ int			trg_interacting(t_beam *ray, t_trg *cone, t_env *env, double d)
 	return (ret);
 }
 
-int			surface_interacting(t_beam *ray, void *obj, t_env *env, double d)
+int			surface_interacting(t_beam *ray, void *entity, t_env *env, double d)
 {
 	double		denom;
 	t_matrix	pl;
 	t_surface	*plane;
 	double		t;
 
-	plane = (t_surface *)(obj);
-	denom = mult_matrix(&plane->normal, &ray->dir);
+	plane = (t_surface *)(entity);
+	denom = mult_matrix(&plane->optimize_rate, &ray->richtung);
 	if (fabs(denom) > 0.001)
 	{
-		pl = min_matrix(&plane->point, &ray->start);
-		t = mult_matrix(&pl, &plane->normal) / denom;
+		pl = min_matrix(&plane->dot, &ray->anfang);
+		t = mult_matrix(&pl, &plane->optimize_rate) / denom;
 		if (t > 0.001 && t < env->t)
 		{
 			env->t = t - 0.1;
@@ -118,18 +118,18 @@ int			surface_interacting(t_beam *ray, void *obj, t_env *env, double d)
 	return (0);
 }
 
-int			objects_hinteracting(t_entity *obj, t_beam *ray, t_env *env, double d)
+int			objects_hinteracting(t_entity *entity, t_beam *ray, t_env *env, double d)
 {
 	int		res_code;
 
 	res_code = 0;
-	if (obj->type == SPHERE)
-		res_code = tdcircle_interacting(ray, obj->obj, env, d);
-	else if (obj->type == CYLINDER)
-		res_code = tdparaleg_interacting(ray, obj->obj, env, d);
-	else if (obj->type == CONUS)
-		res_code = trg_interacting(ray, obj->obj, env, d);
-	else if (obj->type == PLANE)
-		res_code = surface_interacting(ray, obj->obj, env, d);
+	if (entity->ent_id == SPHERE)
+		res_code = tdcircle_interacting(ray, entity->ent, env, d);
+	else if (entity->ent_id == CYLINDER)
+		res_code = tdparaleg_interacting(ray, entity->ent, env, d);
+	else if (entity->ent_id == CONUS)
+		res_code = trg_interacting(ray, entity->ent, env, d);
+	else if (entity->ent_id == PLANE)
+		res_code = surface_interacting(ray, entity->ent, env, d);
 	return (res_code);
 }

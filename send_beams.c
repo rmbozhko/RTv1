@@ -19,34 +19,34 @@ t_matrix	xyz_rotation(t_matrix *v, t_env *env)
 	v->ab = (2 * ((env->x + 0.5) * INV_WIDTH) - 1) * ANGLE * ASP_RATIO;
 	v->ord = (1 - 2 * ((env->y + 0.5) * INV_HEIGHT)) * ANGLE;
 	v->apl = 1;
-	v1 = abscissa_rotation(v, env->alpha);
-	v1 = ordinate_rotation(&v1, env->beta);
-	v1 = aplikata_rotation(&v1, env->gamma);
+	v1 = abscissa_rotation(v);
+	v1 = ordinate_rotation(&v1);
+	v1 = aplikata_rotation(&v1);
 	v1 = optim_settup(&v1);
 	return (v1);
 }
 
 void	pull_beam(t_env *env)
 {
-	t_beam		ray;
-	t_beam		shadow_ray;
+	t_beam		beam;
+	t_beam		beam_chorn;
 	double		light_d;
 	int			cur_obj;
 
-	ray.start.ab = 800;
-	ray.start.ord = 500;
-	ray.start.apl = -2100;
+	beam.anfang.ab = 800;
+	beam.anfang.ord = 500;
+	beam.anfang.apl = -2100;
 	while (env->y < HEIGHT)
 	{
 		while (env->x < WIDTH)
 		{
-			ray.dir = xyz_rotation(&ray.dir, env);
-			if ((cur_obj = determine_interacting(env, &ray, 800000)) != -1)
+			beam.richtung = xyz_rotation(&beam.richtung, env);
+			if ((cur_obj = determine_interacting(env, &beam, 800000)) != -1)
 			{
-				shadow_ray = determine_sbeam(env, &ray);
+				beam_chorn = determine_sbeam(env, &beam);
 				light_d = sqrt(mult_matrix(&env->dist_to_light,
 					&env->dist_to_light));
-				window_setting(env, &shadow_ray, light_d, cur_obj);
+				window_setting(env, &beam_chorn, light_d, cur_obj);
 			}
 			env->x++;
 		}
@@ -55,33 +55,30 @@ void	pull_beam(t_env *env)
 	}
 }
 
-int		determine_interacting(t_env *env, t_beam *ray, double light_d)
+int		determine_interacting(t_env *env, t_beam *beam, double light_d)
 {
-	int		cur_obj;
-	int		i;
+	int		counter;
+	int		id;
 
-	env->t = 200000.0;
-	cur_obj = -1;
-	i = 0;
-	while (i < 6)
-	{
-		if (objects_hinteracting(&env->obj[i], ray, env, light_d) == 1)
-			cur_obj = i;
-		i++;
-	}
-	return (cur_obj);
+	env->t = MAGIC_NUM;
+	counter = -1;
+	id = -1;
+
+	while (++id < 6)
+		counter = (objects_hinteracting(&env->obj[id], beam, env, light_d) == 1) ? id : counter;
+	return (counter);
 }
 
-t_beam	determine_sbeam(t_env *env, t_beam *ray)
+t_beam	determine_sbeam(t_env *env, t_beam *beam)
 {
-	t_beam	shadow_ray;
+	t_beam	beam_chorn;
 
-	env->scaled = mult_matx_skl(&ray->dir, env->t);
-	env->new_start = summ_matrix(&ray->start, &env->scaled);
-	env->dist_to_light = min_matrix(&env->light.pos, &env->new_start);
-	shadow_ray.start = env->new_start;
-	shadow_ray.dir = optim_settup(&env->dist_to_light);
-	return (shadow_ray);
+	env->scaled = mult_matx_skl(&beam->richtung, env->t);
+	env->new_start = summ_matrix(&beam->anfang, &env->scaled);
+	env->dist_to_light = min_matrix(&env->light.location, &env->new_start);
+	beam_chorn.anfang = env->new_start;
+	beam_chorn.richtung = optim_settup(&env->dist_to_light);
+	return (beam_chorn);
 }
 
 void	depict_entity(t_env *env, int cur_obj, t_matrix *dir)
@@ -90,15 +87,15 @@ void	depict_entity(t_env *env, int cur_obj, t_matrix *dir)
 	t_paint		color_dark;
 
 	norm = optimization(&(env->obj[cur_obj]), &env->new_start, dir);
-	color_dark = env->obj[cur_obj].color;
-	color_dark.tr = 230 * (1 - calc_angle_matrix(&norm, dir));
+	color_dark = env->obj[cur_obj].paint;
+	color_dark.clarity = 230 * (1 - calc_angle_matrix(&norm, dir));
 	if (calc_angle_matrix(&norm, dir) >= 0.94)
 	{
-		color_dark.r += (255 - color_dark.r)
+		color_dark.red += (255 - color_dark.red)
 			* calc_angle_matrix(&norm, dir) * 15;
-		color_dark.g += (255 - color_dark.g)
+		color_dark.green += (255 - color_dark.green)
 			* calc_angle_matrix(&norm, dir) * 15;
-		color_dark.b += (255 - color_dark.b)
+		color_dark.blue += (255 - color_dark.blue)
 			* calc_angle_matrix(&norm, dir) * 15;
 	}
 	insert_pixel(env, env->x, env->y, &color_dark);
@@ -107,11 +104,11 @@ void	depict_entity(t_env *env, int cur_obj, t_matrix *dir)
 void	window_setting(t_env *env, t_beam *shadow_ray,
 			double light_d, int cur_obj)
 {
-	if (determine_interacting(env, shadow_ray, light_d) == -1)
-		depict_entity(env, cur_obj, &shadow_ray->dir);
+	if (determine_interacting(env, shadow_ray, light_d) < 0)
+		depict_entity(env, cur_obj, &shadow_ray->richtung);
 	else
 	{
-		env->obj[cur_obj].color.tr = 230;
-		insert_pixel(env, env->x, env->y, &(env->obj[cur_obj].color));
+		env->obj[cur_obj].paint.clarity = 255;
+		insert_pixel(env, env->x, env->y, &(env->obj[cur_obj].paint));
 	}
 }
