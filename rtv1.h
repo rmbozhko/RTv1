@@ -22,6 +22,8 @@
 # define MAX_UCHAR 255
 # define BOUND 0.94
 # define MULT_HELPER(X) X->ab * X->ab + X->ord * X->ord + X->apl * X->apl
+# define TRG_TAN 1 + pow(tan(trg->corner), 2)
+# define SQUARE(X) pow(X, 2)
 
 # define SPHERE 1
 # define CYLINDER 2
@@ -171,8 +173,9 @@ void		window_setting(double glow_dist, int cur_obj, t_beam *ch_beam,
 
 double		calc_angle_matrix(t_matrix *v1, t_matrix *v2);
 
-t_matrix	trg_math(t_beam *ray, t_trg *cone, t_matrix *dist);
-t_matrix	tdrect_math(t_beam *ray, t_tdparaleg *cyl, t_matrix *dist);
+
+t_matrix	trg_math(t_trg *trg, t_beam *beam, t_matrix *ziel);
+t_matrix	tdparaleg_math(t_matrix *ziel, t_beam *beam, t_tdparaleg *tdparal);
 t_matrix	xyz_rotation(t_env *env, t_matrix *richtung);
 void		depict_entity(t_env *env, int cur_obj, t_matrix *dir);
 

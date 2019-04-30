@@ -1,11 +1,6 @@
 #include "rtv1.h"
 
-void		determine_ret_value()
-{
-	
-}
-
-int			tdcircle_interacting(t_beam *ray, void *obj, t_env *env, double d)
+int			tdcircle_interacting(t_beam *ray, void *obj, t_env *env, double bound)
 {
 	t_matrix	dist;
 	t_matrix	ab;
@@ -27,11 +22,11 @@ int			tdcircle_interacting(t_beam *ray, void *obj, t_env *env, double d)
 	(tt.ord > 0.001) && (tt.ord < env->skl) ? ret = 1 : 0;
 	(tt.ord > 0.001) && (tt.ord < env->skl) ? env->skl = tt.ord : 0;
 	env->skl -= 0.01;
-	return ((env->skl > d) ? 0 : ret);
+	return ((env->skl > bound) ? 0 : ret);
 }
 
-int			tdparaleg_interacting(t_beam *ray, t_tdparaleg *cyl,
-				t_env *env, double d)
+int			tdparaleg_interacting(t_beam *beam, t_tdparaleg *tdparaleg,
+				t_env *env, double bound)
 {
 	t_matrix	dist;
 	t_matrix	abc;
@@ -40,9 +35,9 @@ int			tdparaleg_interacting(t_beam *ray, t_tdparaleg *cyl,
 	int			ret;
 
 	ret = 0;
-	dist = min_matrix(&cyl->location, &ray->anfang);
-	cyl->coord_move = optim_settup(&cyl->coord_move);
-	abc = tdrect_math(ray, cyl, &dist);
+	dist = min_matrix(&tdparaleg->location, &beam->anfang);
+	tdparaleg->coord_move = optim_settup(&tdparaleg->coord_move);
+	abc = tdparaleg_math(&dist, beam, tdparaleg);
 	discr = abc.ord * abc.ord - 4 * abc.ab * abc.apl;
 	if (discr < 0)
 		return (ret);
@@ -53,10 +48,10 @@ int			tdparaleg_interacting(t_beam *ray, t_tdparaleg *cyl,
 	(t.ord > 0.001) && (t.ord < env->skl) ? ret = 1 : 0;
 	(t.ord > 0.001) && (t.ord < env->skl) ? env->skl = t.ord : 0;
 	env->skl -= 0.01;
-	return ((env->skl > d) ? 0 : ret);
+	return ((env->skl > bound) ? 0 : ret);
 }
 
-int			trg_interacting(t_beam *ray, t_trg *cone, t_env *env, double d)
+int			trg_interacting(t_beam *beam, t_trg *trg, t_env *env, double bound)
 {
 	t_matrix	dist;
 	t_matrix	abc;
@@ -65,9 +60,9 @@ int			trg_interacting(t_beam *ray, t_trg *cone, t_env *env, double d)
 	int			ret;
 
 	ret = 0;
-	dist = min_matrix(&cone->location, &ray->anfang);
-	cone->coord_move = optim_settup(&cone->coord_move);
-	abc = trg_math(ray, cone, &dist);
+	dist = min_matrix(&trg->location, &beam->anfang);
+	trg->coord_move = optim_settup(&trg->coord_move);
+	abc = trg_math(trg, beam, &dist);
 	discr = abc.ord * abc.ord - 4 * abc.ab * abc.apl;
 	if (discr < 0)
 		return (ret);
@@ -78,10 +73,10 @@ int			trg_interacting(t_beam *ray, t_trg *cone, t_env *env, double d)
 	(t.ord > 0.001) && (t.ord < env->skl) ? ret = 1 : 0;
 	(t.ord > 0.001) && (t.ord < env->skl) ? env->skl = t.ord : 0;
 	env->skl -= 0.01;
-	return ((env->skl > d) ? 0 : ret);
+	return ((env->skl > bound) ? 0 : ret);
 }
 
-int			surface_interacting(t_beam *ray, void *entity, t_env *env, double d)
+int			surface_interacting(t_beam *ray, void *entity, t_env *env, double bound)
 {
 	double		denom;
 	t_matrix	pl;
@@ -97,7 +92,7 @@ int			surface_interacting(t_beam *ray, void *entity, t_env *env, double d)
 		if (t > 0.001 && t < env->skl)
 		{
 			env->skl = t - 0.1;
-			return (env->skl > d) ? 0 : 1;
+			return (env->skl > bound) ? 0 : 1;
 		}
 	}
 	return (0);
