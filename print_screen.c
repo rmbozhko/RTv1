@@ -58,7 +58,7 @@ int			ft_make_printscreen(t_env *env)
 	unsigned char					*temp;
 
 	outfile = ft_get_file();
-	ft_init_st(env, &cinfo, outfile);
+	ft_in(env, &cinfo, outfile);
 	temp = ft_get_proper(env);
 	while (cinfo.next_scanline < cinfo.image_height)
 	{

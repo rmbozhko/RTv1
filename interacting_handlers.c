@@ -14,17 +14,17 @@
 
 int			surface_inter(t_beam *b, void *ent, t_env *env, double bound)
 {
-	double		l;
+	double		sqalac;
 	t_matrix	pl;
 	t_surface	*surface;
 	double		temp;
 
 	surface = (t_surface *)(ent);
-	l = mult_matrix(&surface->optimize_rate, &b->richtung);
-	if (fabs(l) > 0.001)
+	sqalac = mult_matrix(&surface->optimize_rate, &b->richtung);
+	if (fabs(sqalac) > 0.001)
 	{
 		pl = min_matrix(&surface->dot, &b->anfang);
-		temp = mult_matrix(&pl, &surface->optimize_rate) / l;
+		temp = mult_matrix(&pl, &surface->optimize_rate) / sqalac;
 		if (temp > 0.001 && temp < env->skl)
 		{
 			env->skl = temp - 0.1;

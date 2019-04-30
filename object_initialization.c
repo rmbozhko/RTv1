@@ -43,7 +43,7 @@ void	instantiating_fentity(t_env *env)
 	instantiate_entity(&env->tdcircle.location, NULL, TDCIRCLE);
 	env->tdcircle.div_diameter =
 		instantiate_div_diameter(TDCIRCLE, NULL, NULL);
-	instantiating_other_entities(TDPARALEG,
+	inst_other_entities(TDPARALEG,
 			&env->tdparaleg_s.location, &env->tdparaleg_s.coord_move);
 	env->tdparaleg_s.div_diameter = 10000 / 4;
 	instantiate_entity(&env->surface_f.dot,

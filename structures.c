@@ -88,7 +88,7 @@ void		instantiate_glow(t_env *env)
 	env->glow.location.apl = -1600;
 }
 
-void		instantiating_other_entities(int id, t_matrix *loc, t_matrix *coord)
+void		inst_other_entities(int id, t_matrix *loc, t_matrix *coord)
 {
 	if (id == TDPARALEG)
 	{

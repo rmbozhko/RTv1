@@ -28,7 +28,7 @@ double	aplikata_multi(const double z1, double z2)
 	return (z1 * z2);
 }
 
-void	ft_init_st(t_env *env, struct jpeg_compress_struct *c, FILE *o)
+void	ft_in(t_env *env, struct jpeg_compress_struct *c, FILE *o)
 {
 	struct jpeg_error_mgr		jerr;
 

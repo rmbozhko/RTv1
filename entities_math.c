@@ -47,10 +47,12 @@ int			tdparaleg_interacting(t_beam *b, t_tdparaleg *tdparal,
 		return (back);
 	mtrx.ab = (lol.ord - sqrt(discr)) / (2 * lol.ab);
 	mtrx.ord = (lol.ord + sqrt(discr)) / (2 * lol.ab);
-	(mtrx.ab > 0.001) && (mtrx.ab < env->skl) ? back = 1 : 0;
-	(mtrx.ab > 0.001) && (mtrx.ab < env->skl) ? env->skl = mtrx.ab : 0;
-	(mtrx.ord > 0.001) && (mtrx.ord < env->skl) ? back = 1 : 0;
-	(mtrx.ord > 0.001) && (mtrx.ord < env->skl) ? env->skl = mtrx.ord : 0;
+	if (TDPARALEG_COND_ONE)
+		back = 1;
+	if (TDPARALEG_QUES_1)
+		env->skl = mtrx.ab;
+	if (TDPARALEG_QUES_2)
+		env->skl = mtrx.ord;
 	env->skl -= 0.01;
 	return ((env->skl > d) ? 0 : back);
 }

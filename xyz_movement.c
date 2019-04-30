@@ -54,10 +54,14 @@ int			trg_interacting(t_beam *beam, t_trg *trg, t_env *env, double bound)
 		return (ret);
 	miss.ab = (temp.ord - sqrt(discr)) / (2 * temp.ab);
 	miss.ord = (temp.ord + sqrt(discr)) / (2 * temp.ab);
-	(miss.ab > 0.001) && (miss.ab < env->skl) ? ret = 1 : 0;
-	(miss.ab > 0.001) && (miss.ab < env->skl) ? env->skl = miss.ab : 0;
-	(miss.ord > 0.001) && (miss.ord < env->skl) ? ret = 1 : 0;
-	(miss.ord > 0.001) && (miss.ord < env->skl) ? env->skl = miss.ord : 0;
+	if (TRG_COND)
+	{
+		ret = 1;
+		env->skl = miss.ab;
+	}
+	if (TRG_COND_2)
+		ret = 1;
+	(TRG_COND_2) ? env->skl = miss.ord : 0;
 	env->skl -= 0.01;
 	return ((env->skl > bound) ? 0 : ret);
 }

@@ -37,7 +37,7 @@ void		ft_init_env(t_env *env, unsigned width, unsigned height)
 		ft_throw_exception("Invalid window size parameters");
 }
 
-int			tdcircle_inter(t_beam *b, void *ent, t_env *env, double bound)
+int			tdcircle_inter(t_beam *b, void *e, t_env *env, double bo)
 {
 	t_matrix	dist;
 	t_matrix	miss;
@@ -46,20 +46,24 @@ int			tdcircle_inter(t_beam *b, void *ent, t_env *env, double bound)
 	int			ret;
 
 	ret = 0;
-	sphere = (t_tdcircle *)(ent);
+	sphere = (t_tdcircle *)(e);
 	dist = min_matrix(&sphere->location, &b->anfang);
 	miss.ab = mult_matrix(&b->richtung, &dist);
-	miss.ord = miss.ab * miss.ab - mult_matrix(&dist, &dist) + sphere->div_diameter;
+	miss.ord = miss.ab * miss.ab - REPLACE_1;
 	if (miss.ord < 0.0)
 		return (0);
 	calc.ab = miss.ab - sqrt(miss.ord);
 	calc.ord = miss.ab + sqrt(miss.ord);
-	(calc.ab > 0.001) && (calc.ab < env->skl) ? ret = 1 : 0;
-	(calc.ab > 0.001) && (calc.ab < env->skl) ? env->skl = calc.ab : 0;
-	(calc.ord > 0.001) && (calc.ord < env->skl) ? ret = 1 : 0;
-	(calc.ord > 0.001) && (calc.ord < env->skl) ? env->skl = calc.ord : 0;
+	if (TDCIRCLE_CONDITION)
+	{
+		ret = 1;
+		env->skl = calc.ab;
+	}
+	if (LOL_COND)
+		ret = 1;
+	(LOL_COND) ? env->skl = calc.ord : 0;
 	env->skl -= 0.01;
-	return ((env->skl > bound) ? 0 : ret);
+	return ((env->skl > bo) ? 0 : ret);
 }
 
 t_matrix	optimization_for_surface(t_matrix *lol, t_surface *surface)
