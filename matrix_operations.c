@@ -33,10 +33,8 @@ t_matrix	summ_matrix(t_matrix *v1, t_matrix *v2)
 t_matrix	optim_settup(t_matrix *vector)
 {
 	t_matrix	norm;
-	double		length;
 
-	length = sqrt(mult_matrix(vector, vector));
-	norm = mult_matx_skl(vector, 1 / length);
+	norm = mult_matx_skl(vector, 1 / sqrt(SQ(vector)));
 	return (norm);
 }
 

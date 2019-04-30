@@ -30,10 +30,10 @@ static int	key_binds(int keycode, t_env* env)
 			if (env->clarity_coef > 0 && env->clarity_coef < 300)
 				env->clarity_coef += 5;
 		}
-		env->x = 0;
-		env->y = 0;
+		X = 0;
+		Y = 0;
 		mlx_clear_window(env->mlx, env->win); 
-		process_beam(env);
+		process_beam(env, 0.0);
 	}
 	return (0);
 }

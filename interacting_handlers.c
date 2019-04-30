@@ -1,5 +1,10 @@
 #include "rtv1.h"
 
+void		determine_ret_value()
+{
+	
+}
+
 int			tdcircle_interacting(t_beam *ray, void *obj, t_env *env, double d)
 {
 	t_matrix	dist;
