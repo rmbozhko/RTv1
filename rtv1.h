@@ -17,11 +17,16 @@
 # define PLUS 69
 # define MINUS 78
 # define MAGIC_NUM 200000.0
+# define ITS_MAGIC 8000000
 
 # define SPHERE 1
 # define CYLINDER 2
 # define CONUS 3
 # define PLANE 4
+
+# define SQ(X) mult_matrix(X, X)
+# define X env->x
+# define Y env->y
 
 # define FOV 60
 # define ASP_RATIO (env->width / (double)env->height)
@@ -129,7 +134,7 @@ typedef struct	s_env
 
 	t_matrix	multpl_skl;
 	t_matrix	neues_anfang;
-	t_matrix	strecke_zur_licht;
+	t_matrix	s_of_l;
 	double		skl;
 	Mix_Music	*main_theme;
 }				t_env;
@@ -157,8 +162,9 @@ double		mult_matrix(t_matrix *v1, t_matrix *v2);
 
 t_matrix	optimization(t_entity *obj, t_matrix *start, t_matrix *lil);
 
-void		window_setting(t_env *env, t_beam *shadow_ray,
-						double light_d, int cur_obj);
+void		window_setting(double glow_dist, int cur_obj, t_beam *ch_beam,
+				t_env *env);
+
 double		calc_angle_matrix(t_matrix *v1, t_matrix *v2);
 
 t_matrix	trg_math(t_beam *ray, t_trg *cone, t_matrix *dist);
@@ -167,8 +173,8 @@ t_matrix	xyz_rotation(t_matrix *v, t_env *env);
 void		depict_entity(t_env *env, int cur_obj, t_matrix *dir);
 
 int			determine_interacting(t_env *env, t_beam *ray, double light_d);
-t_beam		determine_sbeam(t_env *env, t_beam *ray);
-void		process_beam(t_env *env);
+t_beam		determine_sbeam(t_env *env);
+void		process_beam(t_env *env, int cho_entity);
 
 FILE			*ft_get_file(void);
 void			ft_init_st(t_env *env, struct jpeg_compress_struct *c, FILE *o);

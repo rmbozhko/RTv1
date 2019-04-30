@@ -29,18 +29,21 @@ static void		ft_build_mtrx(int abscissa, int ordinata, int aplikanta, t_matrix *
 void	process_beam(t_env *env, int cho_entity)
 {
 	t_beam		beam;
+	bool		flag;
 
-	ft_build_mtrx(1600 / 4 * 2, 15 % 10 * 100, 3 * -7 * cos(0) * 100, &beam.anfang);
-
+	flag = true;
 	while (Y < (int)env->height)
 	{
 		while (X < (int)env->width)
 		{
 			beam.richtung = xyz_rotation(&beam.richtung, env);
-			if ((cho_entity = determine_interacting(env, &beam, ITS_MAGIC)) != -1)
+			if (flag)
 			{
-				window_setting(sqrt(SQ(&env->s_of_l)), cho_entity, &beam, env);
+				ft_build_mtrx(1600 / 4 * 2, 15 % 10 * 100, 3 * -7 * cos(0) * 100, &beam.anfang);
+				flag = false;
 			}
+			((cho_entity = determine_interacting(env, &beam, ITS_MAGIC)) != -1) ? 
+				window_setting(sqrt(SQ(&env->s_of_l)), cho_entity, &beam, env) : 0;
 			X++;
 		}
 		X = 0;
