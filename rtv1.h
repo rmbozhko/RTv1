@@ -146,6 +146,13 @@ typedef struct	s_env
 }				t_env;
 
 
+t_matrix	optimization_for_surface(t_matrix *temp, t_surface *surface);
+t_matrix	optimization_for_tdcircle(t_matrix *mtrx, t_tdcircle *tdcircle);
+t_matrix	optimization_for_tdparaleg(t_matrix *mtrx, t_tdparaleg *tdparaleg);
+t_matrix	optimization_for_trg(t_matrix *mtrx, t_trg *trg);
+
+void		ft_build_mtrx(int abscissa, int ordinata, int aplikanta, t_matrix *mtrx);
+
 void		ft_init_env(t_env *env, unsigned widht, unsigned height);
 
 void		instantiating_fentity(t_env *env);

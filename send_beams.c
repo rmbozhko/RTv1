@@ -19,7 +19,7 @@ t_matrix	xyz_rotation(t_env *env, t_matrix *richtung)
 	return (optim_settup(richtung));
 }
 
-static void		ft_build_mtrx(int abscissa, int ordinata, int aplikanta, t_matrix *mtrx)
+void		ft_build_mtrx(int abscissa, int ordinata, int aplikanta, t_matrix *mtrx)
 {
 	mtrx->ab = abscissa;
 	mtrx->ord = ordinata;
